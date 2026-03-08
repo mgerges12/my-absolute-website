@@ -1,150 +1,112 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+  The Absolute Style
  */
 
 :root {
 	--accent: #ffffff;
-	--accent-dark: #cccccc;
-	--black: 255, 255, 255;
-	--gray: 150, 150, 150;
-	--gray-light: 50, 50, 50;
-	--gray-dark: 200, 200, 200;
-	--gray-gradient: rgba(var(--gray-light), 50%), #000;
+	--black: 0, 0, 0;
+	--white: 255, 255, 255;
 }
+
 body {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: 'Office Code Pro', monospace;
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(180deg, #000000 0%, #1a1a1a 100%);
-	background-attachment: fixed;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
+	background: #000000; /* Pure Black Default */
 	color: white;
-	font-size: 20px;
-	line-height: 1.7;
+	font-size: 18px;
+	line-height: 1.6;
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦖</text></svg>") 16 0, auto;
+    transition: background 0.3s ease;
 }
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+
+body.light-mode {
+    background: #ffffff;
+    color: #000000;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Terminal Grotesque', sans-serif;
+	font-weight: normal;
+	margin: 0 0 1rem 0;
 	color: white;
-	line-height: 1.2;
+	line-height: 1;
+	text-transform: uppercase;
+    text-align: center; /* Centered Headers */
 }
+
+body.light-mode h1, 
+body.light-mode h2, 
+body.light-mode h3, 
+body.light-mode h4, 
+body.light-mode h5, 
+body.light-mode h6 {
+    color: #000000;
+}
+
 h1 {
-	font-size: 5rem;
+	font-size: clamp(3rem, 10vw, 6rem);
 	text-transform: lowercase;
 	margin-bottom: 2rem;
-	line-height: 0.9;
 	letter-spacing: -2px;
-	transition: all 0.3s ease;
-	cursor: crosshair;
 }
-h1:hover {
-	text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
-	transform: translateY(-5px);
+
+main {
+	width: 960px; /* Wider main area for bigger video */
+	max-width: calc(100% - 2em);
+	margin: auto;
+	padding: 4em 1em;
 }
+
 a {
 	color: white;
 	text-decoration: none;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-	transition: all 0.3s ease;
 }
-a:hover {
-	color: white;
-	text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
-	border-bottom: 1px solid white;
+
+body.light-mode a {
+    color: #000000;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
 }
+
+a:hover, button:hover {
+	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🍖</text></svg>") 16 0, auto;
+    border-bottom: 1px solid white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+body.light-mode a:hover {
+    border-bottom: 1px solid black;
+    text-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
 .video-container {
-	border: 5px solid white;
-	box-shadow: 10px 10px 0px #333;
-	margin: 3rem 0;
-	position: relative;
-	overflow: hidden;
+	border: 1px solid white;
+	margin: 3rem auto;
+    width: 100%; /* Massive centered video */
+	background: #000;
 }
+
+body.light-mode .video-container {
+    border: 1px solid black;
+    background: #eee;
+}
+
 .video-container iframe {
 	width: 100%;
 	aspect-ratio: 16 / 9;
 	display: block;
 }
-@media (max-width: 720px) {
-	h1 {
-		font-size: 3rem;
-	}
-}
+
 p {
-	margin-bottom: 1em;
+    text-align: center; /* Centered body text */
 }
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-code {
-	padding: 2px 5px;
-	background-color: #333;
-	border-radius: 2px;
-}
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
-}
-pre > code {
-	all: unset;
-}
-blockquote {
-	border-left: 4px solid white;
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
-}
+
 hr {
 	border: none;
 	border-top: 1px solid #333;
 }
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
-}
-
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	clip: rect(1px 1px 1px 1px);
-	clip-path: inset(50%);
-	white-space: nowrap;
+body.light-mode hr {
+    border-top: 1px solid #ddd;
 }

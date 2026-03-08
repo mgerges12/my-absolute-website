@@ -55,12 +55,11 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	.logo-container img {
 		height: 80px;
-		width: auto; /* Prevents squishing */
+		width: auto;
 		display: block;
+		border-radius: 50%; /* Rounded logo */
 	}
-	:global(.light-mode) .logo-container img {
-		filter: invert(1);
-	}
+	/* Removed filter: invert(1) so logo colors stay the same */
 	nav {
 		display: flex;
 		align-items: center;
