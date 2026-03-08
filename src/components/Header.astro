@@ -54,14 +54,13 @@ import HeaderLink from './HeaderLink.astro';
 
 <style>
 	header {
-		padding: 1em 2em 4em 2em; /* Added padding to bottom to fit the shifted elements */
+		padding: 4em 2em; /* Balanced 4em on top and bottom */
 		background: black;
-		border-bottom: 1px solid #333;
         margin: 0;
+        width: 100%;
 	}
 	:global(.light-mode) header {
 		background: white;
-		border-bottom: 1px solid #ddd;
 	}
 	.align-absolute {
 		transform: translateY(50px);
