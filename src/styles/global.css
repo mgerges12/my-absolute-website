@@ -8,6 +8,12 @@
 	--white: 255, 255, 255;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures everything fits perfectly */
+}
+
 body {
 	font-family: 'Office Code Pro', monospace;
 	margin: 0;
@@ -19,6 +25,7 @@ body {
 	line-height: 1.6;
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦖</text></svg>") 16 0, auto;
     transition: background 0.3s ease;
+    overflow-x: hidden; /* Prevents unwanted side-scrolling */
 }
 
 body.light-mode {
@@ -33,7 +40,7 @@ h1, h2, h3, h4, h5, h6 {
 	color: white;
 	line-height: 1;
 	text-transform: uppercase;
-    text-align: center; /* Centered Headers */
+    text-align: center;
 }
 
 body.light-mode h1, 
@@ -53,10 +60,11 @@ h1 {
 }
 
 main {
-	width: 960px; /* Wider main area for bigger video */
+	width: 960px;
 	max-width: calc(100% - 2em);
-	margin: auto;
+	margin: 0 auto;
 	padding: 4em 1em;
+    display: block;
 }
 
 a {
@@ -84,7 +92,7 @@ body.light-mode a:hover {
 .video-container {
 	border: 1px solid white;
 	margin: 3rem auto;
-    width: 100%; /* Massive centered video */
+    width: 100%;
 	background: #000;
 }
 
@@ -100,7 +108,7 @@ body.light-mode .video-container {
 }
 
 p {
-    text-align: center; /* Centered body text */
+    text-align: center;
 }
 
 hr {
@@ -109,4 +117,17 @@ hr {
 }
 body.light-mode hr {
     border-top: 1px solid #ddd;
+}
+
+.sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	clip: rect(1px 1px 1px 1px);
+	clip-path: inset(50%);
+	white-space: nowrap;
 }
