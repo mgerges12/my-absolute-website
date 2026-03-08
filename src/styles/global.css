@@ -73,7 +73,7 @@ main {
 	width: 960px;
 	max-width: calc(100% - 2em);
 	margin: 0 auto;
-	padding: 8em 1em 4em 1em; /* Increased top padding to accommodate shifted header */
+	padding: 2em 1em 4em 1em; /* Reduced from 8em to 2em for tighter spacing */
     display: block;
 }
 
