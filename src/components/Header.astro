@@ -74,13 +74,16 @@ import HeaderLink from './HeaderLink.astro';
 	.internal-links {
 		display: flex;
 		align-items: center;
-		gap: 1.5em;
+		gap: 2em;
 	}
 	nav a {
 		color: white;
 		text-decoration: none;
 		text-transform: lowercase;
 		font-family: 'Office Code Pro', monospace;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
 	}
 	:global(.light-mode) nav a {
 		color: black;
@@ -97,14 +100,11 @@ import HeaderLink from './HeaderLink.astro';
 		cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🍖</text></svg>") 16 0, pointer;
 		display: flex;
 		align-items: center;
-		margin-left: 2em;
         padding: 0;
-        align-self: center;
 	}
 	.theme-switch img {
-		height: 85px; /* Larger size to match the overall header height */
+		height: 80px; /* Matches the logo height for perfect balance */
 		width: auto;
-		object-fit: contain;
-        display: block;
+		display: block;
 	}
 </style>
