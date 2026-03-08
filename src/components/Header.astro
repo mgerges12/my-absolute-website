@@ -4,12 +4,12 @@ import HeaderLink from './HeaderLink.astro';
 ---
 <header>
 	<nav>
-		<div class="logo-container">
+		<div class="logo-container align-absolute">
 			<a href="/">
 				<img id="logo-eye" src="/eye_green.png" alt="logo" />
 			</a>
 		</div>
-		<div class="internal-links">
+		<div class="internal-links align-absolute">
 			<div class="nav-links">
 				<HeaderLink href="/">home</HeaderLink>
 				<HeaderLink href="/videos">videos</HeaderLink>
@@ -62,8 +62,11 @@ import HeaderLink from './HeaderLink.astro';
 		background: white;
 		border-bottom: 1px solid #ddd;
 	}
+	.align-absolute {
+		transform: translateY(50px); /* Massive shift for ALL navigation elements */
+	}
 	.logo-container {
-		background: transparent; /* Ensures perfectly clear logo background */
+		background: transparent;
 	}
 	.logo-container img {
 		height: 80px;
@@ -85,7 +88,6 @@ import HeaderLink from './HeaderLink.astro';
 	.nav-links {
 		display: flex;
 		gap: 1.5em;
-		transform: translateY(15px); /* Nudging navigation links down slightly */
 	}
 	nav a {
 		color: white;
@@ -93,9 +95,20 @@ import HeaderLink from './HeaderLink.astro';
 		text-transform: lowercase;
 		font-family: 'Office Code Pro', monospace;
 		font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        height: 80px; /* Matching the visual height of the logo and switch */
 	}
 	:global(.light-mode) nav a {
 		color: black;
+	}
+	nav a:hover {
+		text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+		border-bottom: 1px solid white;
+	}
+	:global(.light-mode) nav a:hover {
+		text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+		border-bottom: 1px solid black;
 	}
 	nav a.active {
 		border-bottom: 2px solid white;
@@ -110,7 +123,6 @@ import HeaderLink from './HeaderLink.astro';
 		display: flex;
 		align-items: center;
 		padding: 0;
-		transform: translateY(50px); /* Keeps the switch at the lower position */
 	}
 	.theme-switch img {
 		height: 100px;
