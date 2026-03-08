@@ -11,21 +11,21 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Ensures everything fits perfectly */
+    box-sizing: border-box;
 }
 
 body {
-	font-family: 'Office Code Pro', monospace;
+	font-family: 'Office Code Pro', 'Courier New', monospace;
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: #000000; /* Pure Black Default */
+	background: #000000;
 	color: white;
 	font-size: 18px;
 	line-height: 1.6;
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦖</text></svg>") 16 0, auto;
     transition: background 0.3s ease;
-    overflow-x: hidden; /* Prevents unwanted side-scrolling */
+    overflow-x: hidden;
 }
 
 body.light-mode {
@@ -38,7 +38,7 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
 	margin: 0 0 1rem 0;
 	color: white;
-	line-height: 1;
+	line-height: 1.1;
 	text-transform: uppercase;
     text-align: center;
 }
@@ -57,13 +57,23 @@ h1 {
 	text-transform: lowercase;
 	margin-bottom: 2rem;
 	letter-spacing: -2px;
+	transition: all 0.3s ease;
+}
+
+h1:hover {
+	text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
+	transform: translateY(-5px);
+}
+
+body.light-mode h1:hover {
+	text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
 
 main {
 	width: 960px;
 	max-width: calc(100% - 2em);
 	margin: 0 auto;
-	padding: 4em 1em;
+	padding: 2em 1em 4em 1em; /* Reduced top padding to eliminate gap */
     display: block;
 }
 
@@ -71,6 +81,7 @@ a {
 	color: white;
 	text-decoration: none;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	transition: all 0.3s ease;
 }
 
 body.light-mode a {
@@ -80,12 +91,10 @@ body.light-mode a {
 
 a:hover, button:hover {
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🍖</text></svg>") 16 0, auto;
-    border-bottom: 1px solid white;
     text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
 body.light-mode a:hover {
-    border-bottom: 1px solid black;
     text-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
