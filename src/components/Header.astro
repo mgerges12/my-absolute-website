@@ -2,17 +2,30 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
-
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<div class="logo-container">
+			<a href="/">
+				<img id="logo-eye" src="/eye_green.png" alt="logo" width="100" height="100" />
+			</a>
+		</div>
 		<div class="internal-links">
 			<HeaderLink href="/">home</HeaderLink>
 			<HeaderLink href="/blog">blogs</HeaderLink>
-			<HeaderLink href="/about">videos</HeaderLink>
+			<HeaderLink href="/videos">videos</HeaderLink>
 		</div>
 	</nav>
 </header>
+
+<script>
+	const eyes = ['/eye_green.png', '/eye_orange.png', '/eye_yellow.png'];
+	const randomEye = eyes[Math.floor(Math.random() * eyes.length)];
+	const logoImg = document.getElementById('logo-eye') as HTMLImageElement;
+	if (logoImg) {
+		logoImg.src = randomEye;
+	}
+</script>
+
 <style>
 	header {
 		margin: 0;
@@ -20,15 +33,17 @@ import HeaderLink from './HeaderLink.astro';
 		background: black;
 		border-bottom: 1px solid white;
 	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
+	.logo-container {
+		display: flex;
+		align-items: center;
+		padding: 0.5em 0;
 	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-		color: white;
+	.logo-container a {
+		border: none;
+		padding: 0;
+	}
+	.logo-container a:hover {
+		background: transparent;
 	}
 	nav {
 		display: flex;
@@ -36,6 +51,7 @@ import HeaderLink from './HeaderLink.astro';
 		justify-content: space-between;
 	}
 	nav a {
+...
 		padding: 1em 0.5em;
 		color: white;
 		border-bottom: 4px solid transparent;
