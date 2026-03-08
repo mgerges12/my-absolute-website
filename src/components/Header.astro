@@ -52,7 +52,7 @@ import HeaderLink from './HeaderLink.astro';
 
 <style>
 	header {
-		padding: 200px 2em 1em 2em; /* Massive top padding to move everything down */
+		padding: 1em 2em;
 		background: black;
 		border-bottom: 1px solid #333;
 	}
@@ -101,6 +101,7 @@ import HeaderLink from './HeaderLink.astro';
 		display: flex;
 		align-items: center;
         padding: 0;
+        transform: translateY(50px); /* Nudging ONLY the switch down */
 	}
 	.theme-switch img {
 		height: 100px; /* Bolder size to match logo better */
