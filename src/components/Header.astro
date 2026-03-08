@@ -12,7 +12,7 @@ import HeaderLink from './HeaderLink.astro';
 		<div class="internal-links">
 			<HeaderLink href="/">home</HeaderLink>
 			<HeaderLink href="/videos">videos</HeaderLink>
-			<button id="theme-toggle" class="theme-switch" aria-label="Toggle Theme">
+			<button id="theme-toggle" class="theme-switch" aria-label="Toggle Theme" title="Toggle light/dark theme">
 				<img id="switch-img" src="/light_off.png" alt="light switch" />
 			</button>
 		</div>
@@ -101,8 +101,8 @@ import HeaderLink from './HeaderLink.astro';
 		margin-left: 1em;
 	}
 	.theme-switch img {
-		height: 40px; /* Adjusting height to fit header */
+		height: 54px; /* Matches the visual height of the navigation links */
 		width: auto;
-		object-fit: contain; /* Handles the extra canvas space */
+		object-fit: contain;
 	}
 </style>
