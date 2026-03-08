@@ -57,23 +57,20 @@ import HeaderLink from './HeaderLink.astro';
 		padding: 1em 2em;
 		background: black;
 		border-bottom: 1px solid #333;
+        margin: 0; /* Ensures no gap */
 	}
 	:global(.light-mode) header {
 		background: white;
 		border-bottom: 1px solid #ddd;
 	}
 	.align-absolute {
-		transform: translateY(50px); /* Massive shift for ALL navigation elements */
-	}
-	.logo-container {
-		background: transparent;
+		transform: translateY(50px);
 	}
 	.logo-container img {
 		height: 80px;
 		width: auto;
 		display: block;
 		border-radius: 12px;
-		background: transparent;
 	}
 	nav {
 		display: flex;
@@ -97,24 +94,17 @@ import HeaderLink from './HeaderLink.astro';
 		font-size: 1.2rem;
         display: flex;
         align-items: center;
-        height: 80px; /* Matching the visual height of the logo and switch */
+        padding-bottom: 10px; /* Space for the underline */
 	}
 	:global(.light-mode) nav a {
 		color: black;
 	}
-	nav a:hover {
-		text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
-		border-bottom: 1px solid white;
-	}
-	:global(.light-mode) nav a:hover {
-		text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-		border-bottom: 1px solid black;
-	}
 	nav a.active {
-		border-bottom: 2px solid white;
+		border-bottom: 4px solid white; /* Bolder underline sit directly under text */
+        margin-bottom: 15px; /* Moves the underline up visually within the container */
 	}
 	:global(.light-mode) nav a.active {
-		border-bottom: 2px solid black;
+		border-bottom: 4px solid black;
 	}
 	.theme-switch {
 		background: transparent;
@@ -123,11 +113,11 @@ import HeaderLink from './HeaderLink.astro';
 		display: flex;
 		align-items: center;
 		padding: 0;
+        transform: translateY(10px); /* Nudging ONLY the switch further down from the 50px base */
 	}
 	.theme-switch img {
 		height: 100px;
 		width: auto;
 		display: block;
-		background: transparent;
 	}
 </style>

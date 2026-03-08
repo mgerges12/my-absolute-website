@@ -73,20 +73,18 @@ main {
 	width: 960px;
 	max-width: calc(100% - 2em);
 	margin: 0 auto;
-	padding: 2em 1em 4em 1em; /* Reduced top padding to eliminate gap */
+	padding: 8em 1em 4em 1em; /* Increased top padding to accommodate shifted header */
     display: block;
 }
 
 a {
 	color: white;
 	text-decoration: none;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 	transition: all 0.3s ease;
 }
 
 body.light-mode a {
     color: #000000;
-    border-bottom: 1px solid rgba(0,0,0,0.3);
 }
 
 a:hover, button:hover {
