@@ -57,15 +57,23 @@ h6 {
 	margin: 0 0 0.5rem 0;
 	color: white;
 	line-height: 1.2;
-}
 h1 {
 	font-size: 5rem;
 	text-transform: lowercase;
 	margin-bottom: 2rem;
 	line-height: 0.9;
 	letter-spacing: -2px;
+	transition: all 0.1s ease;
+	cursor: crosshair;
+}
+h1:hover {
+	text-shadow: 
+		-2px -2px 0px #00ff00, 
+		2px 2px 0px #ff00ff;
+	transform: translate(2px, -2px);
 }
 a {
+...
 	color: #00ff00;
 	text-decoration: none;
 	border-bottom: 1px solid #00ff00;
