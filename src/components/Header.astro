@@ -11,10 +11,9 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 		<div class="internal-links">
 			<HeaderLink href="/">home</HeaderLink>
-			<HeaderLink href="/blog">blogs</HeaderLink>
 			<HeaderLink href="/videos">videos</HeaderLink>
 			<button id="theme-toggle" class="theme-switch" aria-label="Toggle Theme">
-				<div class="switch-inner"></div>
+				<img id="switch-img" src="/light_off.png" alt="light switch" />
 			</button>
 		</div>
 	</nav>
@@ -29,17 +28,25 @@ import HeaderLink from './HeaderLink.astro';
 	}
 
 	const toggle = document.getElementById('theme-toggle');
+	const switchImg = document.getElementById('switch-img') as HTMLImageElement;
 	const body = document.body;
+
+	const updateSwitch = (theme: string) => {
+		if (switchImg) {
+			switchImg.src = theme === 'light-mode' ? '/light_on.png' : '/light_off.png';
+		}
+	};
 
 	if (localStorage.getItem('theme') === 'light-mode') {
 		body.classList.add('light-mode');
-		toggle?.classList.add('active');
+		updateSwitch('light-mode');
 	}
 
 	toggle?.addEventListener('click', () => {
 		body.classList.toggle('light-mode');
-		toggle.classList.toggle('active');
-		localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light-mode' : 'dark-mode');
+		const theme = body.classList.contains('light-mode') ? 'light-mode' : 'dark-mode';
+		updateSwitch(theme);
+		localStorage.setItem('theme', theme);
 	});
 </script>
 
@@ -48,8 +55,6 @@ import HeaderLink from './HeaderLink.astro';
 		padding: 1em 2em;
 		background: black;
 		border-bottom: 1px solid #333;
-		display: block;
-		margin: 0;
 	}
 	:global(.light-mode) header {
 		background: white;
@@ -59,7 +64,7 @@ import HeaderLink from './HeaderLink.astro';
 		height: 80px;
 		width: auto;
 		display: block;
-		border-radius: 12px; /* Less curved, but still rounded */
+		border-radius: 12px;
 	}
 	nav {
 		display: flex;
@@ -76,18 +81,9 @@ import HeaderLink from './HeaderLink.astro';
 		text-decoration: none;
 		text-transform: lowercase;
 		font-family: 'Office Code Pro', monospace;
-		transition: all 0.3s ease;
 	}
 	:global(.light-mode) nav a {
 		color: black;
-	}
-	nav a:hover {
-		text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
-		border-bottom: 1px solid white;
-	}
-	:global(.light-mode) nav a:hover {
-		text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-		border-bottom: 1px solid black;
 	}
 	nav a.active {
 		border-bottom: 1px solid white;
@@ -96,30 +92,17 @@ import HeaderLink from './HeaderLink.astro';
 		border-bottom: 1px solid black;
 	}
 	.theme-switch {
-		background: #222;
-		width: 44px;
-		height: 20px;
-		border-radius: 10px;
-		border: 1px solid #444;
-		position: relative;
+		background: transparent;
+		border: none;
 		cursor: pointer;
 		padding: 0;
+		display: flex;
+		align-items: center;
+		margin-left: 1em;
 	}
-	.switch-inner {
-		width: 14px;
-		height: 14px;
-		background: white;
-		border-radius: 50%;
-		position: absolute;
-		top: 2px;
-		left: 2px;
-		transition: 0.2s;
-	}
-	.theme-switch.active {
-		background: #ddd;
-	}
-	.theme-switch.active .switch-inner {
-		left: 26px;
-		background: black;
+	.theme-switch img {
+		height: 40px; /* Adjusting height to fit header */
+		width: auto;
+		object-fit: contain; /* Handles the extra canvas space */
 	}
 </style>
