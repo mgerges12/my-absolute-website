@@ -13,53 +13,122 @@ import HeaderLink from './HeaderLink.astro';
 			<HeaderLink href="/">home</HeaderLink>
 			<HeaderLink href="/blog">blogs</HeaderLink>
 			<HeaderLink href="/videos">videos</HeaderLink>
+			<button id="theme-toggle" class="theme-switch" aria-label="Toggle Theme">
+				<div class="switch-inner"></div>
+			</button>
 		</div>
-	</nav>
-</header>
+		</nav>
+		</header>
 
-<script>
-	const eyes = ['/eye_green.png', '/eye_orange.png', '/eye_yellow.png'];
-	const randomEye = eyes[Math.floor(Math.random() * eyes.length)];
-	const logoImg = document.getElementById('logo-eye') as HTMLImageElement;
-	if (logoImg) {
+		<script>
+		const eyes = ['/eye_green.png', '/eye_orange.png', '/eye_yellow.png'];
+		const randomEye = eyes[Math.floor(Math.random() * eyes.length)];
+		const logoImg = document.getElementById('logo-eye') as HTMLImageElement;
+		if (logoImg) {
 		logoImg.src = randomEye;
-	}
-</script>
+		}
 
-<style>
-	header {
+		// Theme Toggle Logic
+		const toggle = document.getElementById('theme-toggle');
+		const body = document.body;
+
+		// Check for saved theme preference
+		const currentTheme = localStorage.getItem('theme');
+		if (currentTheme) {
+		body.classList.add(currentTheme);
+		if (currentTheme === 'light-mode') {
+			toggle?.classList.add('active');
+		}
+		}
+
+		toggle?.addEventListener('click', () => {
+		body.classList.toggle('light-mode');
+		toggle.classList.toggle('active');
+
+		const theme = body.classList.contains('light-mode') ? 'light-mode' : 'dark-mode';
+		localStorage.setItem('theme', theme);
+		});
+		</script>
+
+		<style>
+		header {
 		margin: 0;
 		padding: 0 1em;
 		background: black;
 		border-bottom: 1px solid white;
-	}
-	.logo-container {
+		}
+		/* Add this to handle light mode header */
+		:global(.light-mode) header {
+		background: white;
+		border-bottom: 1px solid black;
+		}
+		:global(.light-mode) .internal-links a {
+		color: black;
+		}
+		:global(.light-mode) .logo-container img {
+		filter: invert(1);
+		}
+		.logo-container {
 		display: flex;
 		align-items: center;
 		padding: 0.5em 0;
-	}
-	.logo-container a {
+		}
+		.logo-container a {
 		border: none;
 		padding: 0;
-	}
-	.logo-container a:hover {
+		}
+		.logo-container a:hover {
 		background: transparent;
-	}
-	nav {
+		}
+		nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-	}
-	nav a {
-...
+		}
+		nav a {
 		padding: 1em 0.5em;
 		color: white;
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 		text-transform: lowercase;
-	}
-	nav a.active {
+		}
+		nav a.active {
 		text-decoration: none;
 		border-bottom-color: white;
-	}
+		}
+		:global(.light-mode) nav a.active {
+		border-bottom-color: black;
+		}
+
+		/* The Light Switch Styles */
+		.theme-switch {
+		background: #333;
+		width: 50px;
+		height: 24px;
+		border-radius: 12px;
+		border: 1px solid #555;
+		position: relative;
+		cursor: pointer;
+		margin-left: 1em;
+		padding: 0;
+		transition: all 0.3s ease;
+		}
+		.switch-inner {
+		width: 18px;
+		height: 18px;
+		background: white;
+		border-radius: 50%;
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		transition: all 0.3s ease;
+		}
+		.theme-switch.active {
+		background: #eee;
+		}
+		.theme-switch.active .switch-inner {
+		left: 28px;
+		background: #333;
+		}
+		</style>
 </style>

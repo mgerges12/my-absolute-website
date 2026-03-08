@@ -13,6 +13,7 @@
 	--gray-dark: 200, 200, 200;
 	--gray-gradient: rgba(var(--gray-light), 50%), #000;
 }
+
 body {
 	font-family: 'Office Code Pro', monospace;
 	margin: 0;
@@ -26,7 +27,44 @@ body {
 	font-size: 18px;
 	line-height: 1.6;
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦖</text></svg>") 16 0, auto;
+    transition: background 0.5s ease, color 0.5s ease;
 }
+
+/* Light Mode Styles */
+body.light-mode {
+    background: #ffffff;
+    color: #000000;
+}
+
+body.light-mode h1, 
+body.light-mode h2, 
+body.light-mode h3, 
+body.light-mode h4, 
+body.light-mode h5, 
+body.light-mode h6 {
+    color: #000000;
+}
+
+body.light-mode a {
+    color: #000000;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+
+body.light-mode a:hover {
+    text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+    border-bottom: 1px solid black;
+}
+
+body.light-mode .video-container {
+    border: 5px solid black;
+    box-shadow: 10px 10px 0px #eee;
+}
+
+body.light-mode h1:hover {
+    text-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+}
+
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Terminal Grotesque', sans-serif;
 	font-weight: normal;
