@@ -54,7 +54,7 @@ import HeaderLink from './HeaderLink.astro';
 
 <style>
 	header {
-		padding: 0.5em 2em 4em 2em; /* Minimized top padding to 0.5em */
+		padding: 2em 2em 4em 2em; /* Top padding matched to side padding */
 		background: black;
         margin: 0;
         width: 100%;
@@ -89,18 +89,27 @@ import HeaderLink from './HeaderLink.astro';
 		color: white;
 		text-decoration: none;
 		text-transform: lowercase;
-		font-family: 'Office Code Pro', monospace;
-		font-size: 1.2rem;
+		font-family: 'Terminal Grotesque', sans-serif; /* Terminal font for nav */
+		font-size: 1.5rem;
         display: flex;
         align-items: center;
-        padding-bottom: 10px; /* Space for the underline */
+        padding-bottom: 10px;
+        transition: all 0.3s ease;
 	}
 	:global(.light-mode) nav a {
 		color: black;
 	}
+	nav a:hover {
+		text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+		border-bottom: 1px solid white;
+	}
+	:global(.light-mode) nav a:hover {
+		text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+		border-bottom: 1px solid black;
+	}
 	nav a.active {
-		border-bottom: 4px solid white; /* Bolder underline sit directly under text */
-        margin-bottom: 15px; /* Moves the underline up visually within the container */
+		border-bottom: 4px solid white;
+        margin-bottom: 15px;
 	}
 	:global(.light-mode) nav a.active {
 		border-bottom: 4px solid black;
@@ -112,7 +121,7 @@ import HeaderLink from './HeaderLink.astro';
 		display: flex;
 		align-items: center;
 		padding: 0;
-        transform: translateY(10px); /* Nudging ONLY the switch further down from the 50px base */
+        transform: translateY(10px);
 	}
 	.theme-switch img {
 		height: 100px;
