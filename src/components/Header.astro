@@ -74,14 +74,15 @@ import HeaderLink from './HeaderLink.astro';
 	.internal-links {
 		display: flex;
 		align-items: center;
-		gap: 2em;
+		gap: 2.5em;
+        padding-top: 25px; /* Nudging the navigation down for alignment */
 	}
 	nav a {
 		color: white;
 		text-decoration: none;
 		text-transform: lowercase;
 		font-family: 'Office Code Pro', monospace;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         display: flex;
         align-items: center;
 	}
@@ -89,10 +90,10 @@ import HeaderLink from './HeaderLink.astro';
 		color: black;
 	}
 	nav a.active {
-		border-bottom: 1px solid white;
+		border-bottom: 2px solid white;
 	}
 	:global(.light-mode) nav a.active {
-		border-bottom: 1px solid black;
+		border-bottom: 2px solid black;
 	}
 	.theme-switch {
 		background: transparent;
@@ -103,7 +104,7 @@ import HeaderLink from './HeaderLink.astro';
         padding: 0;
 	}
 	.theme-switch img {
-		height: 80px; /* Matches the logo height for perfect balance */
+		height: 100px; /* Bolder size to match logo better */
 		width: auto;
 		display: block;
 	}
