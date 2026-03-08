@@ -5,33 +5,16 @@
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
-		rgba(var(--gray), 33%);
-}
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+	--accent: #ffffff;
+	--accent-dark: #cccccc;
+	--black: 255, 255, 255;
+	--gray: 150, 150, 150;
+	--gray-light: 50, 50, 50;
+	--gray-dark: 200, 200, 200;
+	--gray-gradient: rgba(var(--gray-light), 50%), #000;
 }
 body {
-	font-family: "Atkinson", sans-serif;
+	font-family: 'Space Grotesk', sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -43,9 +26,6 @@ body {
 	font-size: 20px;
 	line-height: 1.7;
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦖</text></svg>") 16 0, auto;
-}
-a, button {
-	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🍖</text></svg>") 16 0, auto;
 }
 main {
 	width: 720px;
@@ -69,27 +49,27 @@ h1 {
 	margin-bottom: 2rem;
 	line-height: 0.9;
 	letter-spacing: -2px;
-	transition: all 0.1s ease;
+	transition: all 0.3s ease;
 	cursor: crosshair;
 }
 h1:hover {
-	text-shadow: 
-		-2px -2px 0px #00ff00, 
-		2px 2px 0px #ff00ff;
-	transform: translate(2px, -2px);
+	text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
+	transform: translateY(-5px);
 }
 a {
-	color: #00ff00;
+	color: white;
 	text-decoration: none;
-	border-bottom: 1px solid #00ff00;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	transition: all 0.3s ease;
 }
 a:hover {
-	background: #00ff00;
-	color: black;
+	color: white;
+	text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+	border-bottom: 1px solid white;
 }
 .video-container {
-	border: 5px solid #00ff00;
-	box-shadow: 10px 10px 0px #003300;
+	border: 5px solid white;
+	box-shadow: 10px 10px 0px #333;
 	margin: 3rem 0;
 	position: relative;
 	overflow: hidden;
@@ -127,7 +107,7 @@ img {
 }
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+	background-color: #333;
 	border-radius: 2px;
 }
 pre {
@@ -138,14 +118,14 @@ pre > code {
 	all: unset;
 }
 blockquote {
-	border-left: 4px solid var(--accent);
+	border-left: 4px solid white;
 	padding: 0 0 0 20px;
 	margin: 0;
 	font-size: 1.333em;
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid #333;
 }
 @media (max-width: 720px) {
 	body {
@@ -164,12 +144,7 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
