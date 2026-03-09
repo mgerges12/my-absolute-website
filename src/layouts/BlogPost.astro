@@ -19,42 +19,37 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				max-width: 100%;
 				margin: 0;
 			}
-			.prose {
-				width: 800px;
+			.prose-container {
+				width: 1000px; /* Wider for complex indentations */
 				max-width: calc(100% - 2em);
 				margin: auto;
 				padding: 2em 1em;
 				color: white;
-                /* The Magic: This makes it look exactly like your text editor */
-                white-space: pre-wrap; 
-                font-family: 'Office Code Pro', monospace !important;
-                font-size: 1.1rem;
-                line-height: 1.5;
                 text-align: left;
 			}
-            /* Remove standard margins that Markdown adds */
-            .prose :global(p) {
-                margin: 0;
-                padding: 0;
+            /* The Absolute Fix: Preformatted Text */
+            .writing-content {
+                font-family: 'Office Code Pro', monospace !important;
+                font-size: 1.1rem;
+                line-height: 1.4;
+                white-space: pre; /* Forces every tab and space to show */
+                overflow-x: auto; /* Adds a scrollbar if an indent is too wide for mobile */
+                margin-top: 2rem;
             }
-            .prose :global(h1), .prose :global(h2), .prose :global(h3) {
-                text-align: left;
-                margin-bottom: 1rem;
-            }
-            :global(.light-mode) .prose {
+            :global(.light-mode) .prose-container {
                 color: black;
             }
-			.title {
+			.title-section {
 				margin-bottom: 2rem;
 				padding: 2em 0;
 				text-align: center;
 				border-bottom: 1px solid #333;
 			}
-            :global(.light-mode) .title {
+            :global(.light-mode) .title-section {
                 border-bottom: 1px solid #ddd;
             }
-			.title h1 {
-				margin: 0 0 0.5em 0;
+			.title-section h1 {
+				margin: 0 0 0.5rem 0;
 				font-size: 3rem;
                 text-transform: uppercase;
 			}
@@ -68,16 +63,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<body>
 		<Header />
 		<main>
-			<article>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-						</div>
-						<h1>{title}</h1>
+			<article class="prose-container">
+				<div class="title-section">
+					<div class="date">
+						<FormattedDate date={pubDate} />
 					</div>
-					<slot />
+					<h1>{title}</h1>
 				</div>
+                <pre class="writing-content"><slot /></pre>
 			</article>
 		</main>
 		<Footer />
