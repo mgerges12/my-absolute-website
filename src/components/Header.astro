@@ -13,6 +13,7 @@ import HeaderLink from './HeaderLink.astro';
 			<div class="nav-links">
 				<HeaderLink href="/">home</HeaderLink>
 				<HeaderLink href="/videos">videos</HeaderLink>
+				<HeaderLink href="/writing">writing</HeaderLink>
 			</div>
 			<button id="theme-toggle" class="theme-switch" aria-label="Toggle Theme" title="Toggle light/dark theme">
 				<img id="switch-img" src="/light_off.png" alt="light switch" />
@@ -54,7 +55,7 @@ import HeaderLink from './HeaderLink.astro';
 
 <style>
 	header {
-		padding: 0 2em 4em 2em; /* Zero top padding */
+		padding: 2em 2em 4em 2em;
 		background: black;
         margin: 0;
         width: 100%;
@@ -63,14 +64,14 @@ import HeaderLink from './HeaderLink.astro';
 		background: white;
 	}
 	.align-absolute {
-		transform: translateY(30px); /* Slightly less shift to keep it tight to top */
+		transform: translateY(30px);
 	}
 	.logo-container img {
 		height: 80px;
 		width: auto;
 		display: block;
 		border-radius: 12px;
-        margin-top: -10px; /* Pulls logo up to ignore transparent pixels */
+        margin-top: -10px;
 	}
 	nav {
 		display: flex;
@@ -80,7 +81,7 @@ import HeaderLink from './HeaderLink.astro';
 	.internal-links {
 		display: flex;
 		align-items: center;
-		gap: 1.5em; /* Reduced gap to move switch left */
+		gap: 1.5em;
 	}
 	.nav-links {
 		display: flex;
@@ -90,7 +91,7 @@ import HeaderLink from './HeaderLink.astro';
 		color: white;
 		text-decoration: none;
 		text-transform: lowercase;
-		font-family: 'Terminal Grotesque', sans-serif;
+		font-family: 'Office Code Pro', monospace !important;
 		font-size: 1.5rem;
         display: flex;
         align-items: center;
@@ -128,6 +129,6 @@ import HeaderLink from './HeaderLink.astro';
 		height: 100px;
 		width: auto;
 		display: block;
-        margin-left: -10px; /* Moves switch slightly more to the left */
+        margin-left: -10px;
 	}
 </style>

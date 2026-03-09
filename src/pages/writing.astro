@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/BlogPost.astro';
+
+const poems = (await getCollection('poems')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const stories = (await getCollection('stories')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout
+	title="writing"
+	description="poems and stories from nowhere"
+	pubDate={new Date('March 08 2026')}
+>
+	<div class="writing-container">
+        <section class="writing-section">
+            <h2>Poems</h2>
+            {poems.length > 0 ? (
+                <ul>
+                    {poems.map((poem) => (
+                        <li>
+                            <a href={`/poems/${poem.id}/`}>{poem.data.title}</a>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No poems yet...</p>
+            )}
+        </section>
+
+        <section class="writing-section">
+            <h2>Stories</h2>
+            {stories.length > 0 ? (
+                <ul>
+                    {stories.map((story) => (
+                        <li>
+                            <a href={`/stories/${story.id}/`}>{story.data.title}</a>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No stories yet...</p>
+            )}
+        </section>
+    </div>
+</Layout>
+
+<style>
+    .writing-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        margin-top: 2rem;
+    }
+    .writing-section h2 {
+        border-bottom: 1px solid white;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+    :global(.light-mode) .writing-section h2 {
+        border-bottom: 1px solid black;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+        text-align: left;
+    }
+    li {
+        margin-bottom: 1rem;
+    }
+    a {
+        font-size: 1.2rem;
+        border: none !important;
+    }
+    a:hover {
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+    @media (max-width: 720px) {
+        .writing-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
