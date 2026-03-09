@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/BlogPost.astro';
-import fs from 'node:fs';
 
 export async function getStaticPaths() {
 	const poems = await getCollection('poems');
@@ -12,76 +11,39 @@ export async function getStaticPaths() {
 }
 
 const poem = Astro.props;
-
-// Detect if it's an HTML file
-const isHtml = poem.id.endsWith('.html');
-let rawContent = "";
-let googleStyles = "";
-
-if (isHtml) {
-    const filePath = `./src/content/poems/${poem.id}`;
-    const fullHtml = fs.readFileSync(filePath, 'utf-8');
-    
-    // Extract secret styles and body
-    const styleMatch = fullHtml.match(/<style[^>]*>([\s\S]*)<\/style>/i);
-    googleStyles = styleMatch ? styleMatch[1] : "";
-    const bodyMatch = fullHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-    rawContent = bodyMatch ? bodyMatch[1] : fullHtml;
-    
-    // Cleanup: Reset backgrounds, fonts, and CRUSH the extra padding gaps
-    googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
-    googleStyles = googleStyles.replace(/font-family:"Arial"/g, 'font-family:inherit');
-    googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
-    // The "Crusher": Remove all top/bottom padding and force tight line height
-    googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0;');
-    googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0;');
-    googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.2;');
-} else {
-    rawContent = poem.body
-        .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/ /g, '&nbsp;')
-        .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
-        .replace(/\n/g, '<br />');
-}
+// Point to the PDF file in the public folder
+const pdfPath = `/${poem.id}.pdf`;
 ---
 
 <Layout title={poem.data.title || poem.id} pubDate={poem.data.pubDate || new Date()}>
-    {isHtml && <style set:html={googleStyles}></style>}
-	<div class="absolute-rendering" set:html={rawContent}></div>
+	<div class="pdf-container">
+        <embed 
+            src={pdfPath} 
+            type="application/pdf" 
+            width="100%" 
+            height="1000px" 
+        />
+        <div class="pdf-fallback">
+            <p>It looks like your browser doesn't support embedded PDFs. 
+               <a href={pdfPath}>Click here to view the poem directly.</a>
+            </p>
+        </div>
+    </div>
 </Layout>
 
 <style>
-    .absolute-rendering {
-        font-family: 'Office Code Pro', monospace !important;
-        font-size: 1.1rem;
-        line-height: 1.2 !important; /* Forces tight spacing */
-        color: inherit;
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin: 0;
-        text-align: left;
+    .pdf-container {
+        width: 100%;
+        margin-top: 2rem;
+        border: 1px solid #333;
+        background: white; /* PDFs look best on a white page background */
     }
-    
-    /* Ensure no extra margins on internal elements */
-    .absolute-rendering :global(p), .absolute-rendering :global(span) {
-        margin: 0 !important;
-        padding: 0 !important;
-        line-height: 1.2 !important;
+    :global(.light-mode) .pdf-container {
+        border: 1px solid #ddd;
     }
-
-    .absolute-rendering :global(*) {
-        font-family: 'Office Code Pro', monospace !important;
-        color: inherit !important;
-    }
-
-    :global(strong), .absolute-rendering :global(strong), .absolute-rendering :global(b) {
-        font-weight: bold !important;
-        color: var(--accent) !important;
-    }
-    :global(.light-mode strong), :global(.light-mode) .absolute-rendering :global(strong) {
-        color: #008000 !important;
+    .pdf-fallback {
+        padding: 2rem;
+        text-align: center;
+        display: none; /* Hide unless the embed fails */
     }
 </style>
