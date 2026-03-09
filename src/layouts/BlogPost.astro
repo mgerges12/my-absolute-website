@@ -23,30 +23,42 @@ const { title, description, pubDate } = Astro.props;
 				width: 1000px;
 				max-width: calc(100% - 2em);
 				margin: auto;
-				padding: 2em 1em;
-				color: white;
+				padding: 0 1em 4em 1em;
+				color: inherit;
                 text-align: left;
 			}
-            :global(.light-mode) .prose-container {
-                color: black;
-            }
 			.title-section {
-				margin-bottom: 2rem;
+				margin-bottom: 3rem;
 				padding: 2em 0;
 				text-align: center;
 				border-bottom: 1px solid #333;
+                position: relative;
 			}
             :global(.light-mode) .title-section {
                 border-bottom: 1px solid #ddd;
             }
+            .back-link {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1.5rem;
+                text-decoration: none;
+                color: var(--accent);
+            }
+            :global(.light-mode) .back-link {
+                color: #008000;
+            }
 			.title-section h1 {
-				margin: 0 0 0.5rem 0;
-				font-size: 3rem;
+				margin: 0;
+				font-size: 4rem; /* Larger Title */
                 text-transform: uppercase;
+                display: inline-block;
 			}
 			.date {
 				margin-bottom: 0.5em;
 				color: #888;
+                font-size: 1rem;
 			}
 		</style>
 	</head>
@@ -56,6 +68,7 @@ const { title, description, pubDate } = Astro.props;
 		<main>
 			<article class="prose-container">
 				<div class="title-section">
+                    <a href="/writing" class="back-link" title="back to writing">← back</a>
 					<div class="date">
 						<FormattedDate date={pubDate} />
 					</div>
