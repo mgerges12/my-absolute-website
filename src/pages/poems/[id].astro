@@ -17,15 +17,17 @@ const formatTitle = (id: string) => {
     return id
         .split('-')
         .map(word => {
-            if (word === 'ill') return "I'll";
-            if (word === 'dont') return "Don't";
-            if (word === 'cant') return "Can't";
+            const lower = word.toLowerCase();
+            if (lower === 'ill') return "I'll";
+            if (lower === 'dont') return "Don't";
+            if (lower === 'cant') return "Can't";
             return word.charAt(0).toUpperCase() + word.slice(1);
         })
         .join(' ');
 };
 
-const rawContent = poem.body;
+// Fixed: Using 'let' instead of 'const' to allow modification
+let rawContent = poem.body;
 let googleStyles = "";
 
 if (rawContent.includes('<style')) {
@@ -37,6 +39,7 @@ if (rawContent.includes('<style')) {
     }
 }
 
+// Clean up styles
 googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
 googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit');
 googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');

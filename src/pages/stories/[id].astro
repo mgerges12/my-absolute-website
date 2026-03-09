@@ -1,7 +1,6 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/BlogPost.astro';
-import fs from 'node:fs';
 
 export async function getStaticPaths() {
 	const stories = await getCollection('stories');
@@ -13,13 +12,27 @@ export async function getStaticPaths() {
 
 const story = Astro.props;
 
+// Smart Title Formatter
+const formatTitle = (id: string) => {
+    return id
+        .split('-')
+        .map(word => {
+            const lower = word.toLowerCase();
+            if (lower === 'ill') return "I'll";
+            if (lower === 'dont') return "Don't";
+            if (lower === 'cant') return "Can't";
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ');
+};
+
+// Fixed: Using 'let' instead of 'const' to allow modification
 let rawContent = story.body;
 let googleStyles = "";
 
 if (rawContent.includes('<style')) {
     const styleMatch = rawContent.match(/<style[^>]*>([\s\S]*)<\/style>/i);
     googleStyles = styleMatch ? styleMatch[1] : "";
-    
     const bodyMatch = rawContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     if (bodyMatch) {
         rawContent = bodyMatch[1];
@@ -31,12 +44,10 @@ googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit')
 googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
 googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0 !important;');
 googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0 !important;');
-googleStyles = googleStyles.replace(/margin-top:.*?;/g, 'margin-top:0 !important;');
-googleStyles = googleStyles.replace(/margin-bottom:.*?;/g, 'margin-bottom:0 !important;');
-googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.1 !important;');
+googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !important;');
 ---
 
-<Layout title={story.data.title || story.id} pubDate={story.data.pubDate || new Date()}>
+<Layout title={formatTitle(story.id)} pubDate={story.data.pubDate || new Date()}>
     {googleStyles && <style set:html={googleStyles}></style>}
 	<div class="absolute-rendering" set:html={rawContent}></div>
 </Layout>
@@ -45,7 +56,7 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.1 !impor
     .absolute-rendering {
         font-family: 'Office Code Pro', monospace !important;
         font-size: 1.1rem;
-        line-height: 1.1 !important;
+        line-height: 1.0 !important;
         color: inherit;
         background: transparent;
         border: none;
@@ -57,19 +68,9 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.1 !impor
     .absolute-rendering :global(*) {
         font-family: 'Office Code Pro', monospace !important;
         color: inherit !important;
-        background-color: transparent !important;
-    }
-
-    .absolute-rendering :global(p), 
-    .absolute-rendering :global(span), 
-    .absolute-rendering :global(div),
-    .absolute-rendering :global(h1),
-    .absolute-rendering :global(h2) {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        line-height: 1.1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.0 !important;
     }
 
     :global(strong) {
