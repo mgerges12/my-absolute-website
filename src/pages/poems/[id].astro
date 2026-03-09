@@ -22,13 +22,18 @@ if (isHtml) {
     const filePath = `./src/content/poems/${poem.id}`;
     const fullHtml = fs.readFileSync(filePath, 'utf-8');
     
-    // 1. Extract the secret Google Docs styles
+    // 1. Extract ALL styles (this is where staggering lives)
     const styleMatch = fullHtml.match(/<style[^>]*>([\s\S]*)<\/style>/i);
     googleStyles = styleMatch ? styleMatch[1] : "";
     
     // 2. Extract the body content
     const bodyMatch = fullHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     rawContent = bodyMatch ? bodyMatch[1] : fullHtml;
+    
+    // 3. Cleanup: Remove Google's forced white background and Arial font
+    googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
+    googleStyles = googleStyles.replace(/font-family:"Arial"/g, 'font-family:inherit');
+    googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
 } else {
     // Standard renderer for non-HTML files
     rawContent = poem.body
@@ -59,13 +64,17 @@ if (isHtml) {
         text-align: left;
     }
     
-    /* Ensure the Office Code Pro font wins over Google's default fonts */
+    /* Ensure our font and color choices win */
     .absolute-rendering :global(*) {
         font-family: 'Office Code Pro', monospace !important;
+        color: inherit !important;
     }
 
-    :global(strong) {
-        font-weight: bold;
-        color: var(--accent);
+    :global(strong), .absolute-rendering :global(strong), .absolute-rendering :global(b) {
+        font-weight: bold !important;
+        color: var(--accent) !important;
+    }
+    :global(.light-mode strong), :global(.light-mode) .absolute-rendering :global(strong) {
+        color: #008000 !important;
     }
 </style>
