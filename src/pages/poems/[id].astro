@@ -22,20 +22,21 @@ if (isHtml) {
     const filePath = `./src/content/poems/${poem.id}`;
     const fullHtml = fs.readFileSync(filePath, 'utf-8');
     
-    // 1. Extract ALL styles (this is where staggering lives)
+    // Extract secret styles and body
     const styleMatch = fullHtml.match(/<style[^>]*>([\s\S]*)<\/style>/i);
     googleStyles = styleMatch ? styleMatch[1] : "";
-    
-    // 2. Extract the body content
     const bodyMatch = fullHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     rawContent = bodyMatch ? bodyMatch[1] : fullHtml;
     
-    // 3. Cleanup: Remove Google's forced white background and Arial font
+    // Cleanup: Reset backgrounds, fonts, and CRUSH the extra padding gaps
     googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
     googleStyles = googleStyles.replace(/font-family:"Arial"/g, 'font-family:inherit');
     googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
+    // The "Crusher": Remove all top/bottom padding and force tight line height
+    googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0;');
+    googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0;');
+    googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.2;');
 } else {
-    // Standard renderer for non-HTML files
     rawContent = poem.body
         .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -55,7 +56,7 @@ if (isHtml) {
     .absolute-rendering {
         font-family: 'Office Code Pro', monospace !important;
         font-size: 1.1rem;
-        line-height: 1.6;
+        line-height: 1.2 !important; /* Forces tight spacing */
         color: inherit;
         background: transparent;
         border: none;
@@ -64,7 +65,13 @@ if (isHtml) {
         text-align: left;
     }
     
-    /* Ensure our font and color choices win */
+    /* Ensure no extra margins on internal elements */
+    .absolute-rendering :global(p), .absolute-rendering :global(span) {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.2 !important;
+    }
+
     .absolute-rendering :global(*) {
         font-family: 'Office Code Pro', monospace !important;
         color: inherit !important;
