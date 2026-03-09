@@ -8,12 +8,15 @@ import Header from '../components/Header.astro';
 type Props = CollectionEntry<'poems'>['data'] | CollectionEntry<'stories'>['data'];
 
 const { title, description, pubDate } = Astro.props;
+
+// Detect if we are on the main listing page or an individual piece
+const isListingPage = title.toLowerCase() === 'writing';
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
+		<style define:vars={{ titleSize: isListingPage ? '4rem' : '8rem' }}>
 			main {
 				width: calc(100% - 2em);
 				max-width: 100%;
@@ -51,7 +54,7 @@ const { title, description, pubDate } = Astro.props;
             }
 			.title-section h1 {
 				margin: 0;
-				font-size: 8rem; /* Extreme Title */
+				font-size: var(--titleSize); /* Adaptive Title Size */
                 text-transform: uppercase;
                 display: inline-block;
                 letter-spacing: -3px;
@@ -70,9 +73,9 @@ const { title, description, pubDate } = Astro.props;
 		<main>
 			<article class="prose-container">
 				<div class="title-section">
-                    <a href="/writing" class="back-link" title="back to writing">← back</a>
+                    {!isListingPage && <a href="/writing" class="back-link" title="back to writing">← back</a>}
 					<div class="date">
-						<FormattedDate date={pubDate} />
+						{!isListingPage && <FormattedDate date={pubDate} />}
 					</div>
 					<h1>{title}</h1>
 				</div>
