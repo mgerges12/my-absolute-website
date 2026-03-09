@@ -56,9 +56,9 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !impor
 <style>
     .absolute-rendering {
         font-family: 'Office Code Pro', monospace !important;
-        font-size: 1.1rem;
+        font-size: 1.4rem; /* Larger text size */
         line-height: 1.0 !important;
-        color: inherit;
+        color: var(--accent) !important;
         background: transparent;
         border: none;
         padding: 0;
@@ -68,6 +68,10 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !impor
         tab-size: 4 !important;
     }
     
+    :global(.light-mode) .absolute-rendering {
+        color: #008000 !important;
+    }
+
     .absolute-rendering :global(*) {
         font-family: 'Office Code Pro', monospace !important;
         color: inherit !important;
@@ -77,11 +81,7 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !impor
         line-height: 1.0 !important;
     }
 
-    :global(strong) {
-        font-weight: bold;
-        color: var(--accent);
-    }
-    :global(.light-mode strong) {
-        color: #008000;
+    :global(strong), .absolute-rendering :global(strong), .absolute-rendering :global(b) {
+        font-weight: bold !important;
     }
 </style>
