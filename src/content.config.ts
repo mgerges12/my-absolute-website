@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 import fs from 'node:fs';
 import path from 'node:path';
 
-// Custom loader to handle HTML files raw with automatic dates
+// Custom loader to handle HTML files raw with automatic OR explicit dates
 function rawHtmlLoader(basePath: string) {
     return {
         name: 'raw-html-loader',
@@ -15,18 +15,26 @@ function rawHtmlLoader(basePath: string) {
             
             for (const file of files) {
                 const filePath = path.join(dir, file);
-                const content = fs.readFileSync(filePath, 'utf-8');
+                let content = fs.readFileSync(filePath, 'utf-8');
                 const id = file.replace(/\.(html|md)$/, '');
                 
-                // Get the actual "Last Modified" date from the file
-                const stats = fs.statSync(filePath);
-                const fileDate = stats.mtime; // mtime is the last modified time
+                // Detect explicit pubDate: in the content
+                let finalDate = fs.statSync(filePath).mtime;
+                const dateMatch = content.match(/pubDate:\s*(.*)/i);
+                if (dateMatch) {
+                    const parsedDate = new Date(dateMatch[1]);
+                    if (!isNaN(parsedDate.getTime())) {
+                        finalDate = parsedDate;
+                        // Clean up the pubDate line so it doesn't show in the body
+                        content = content.replace(/pubDate:\s*.*\n?/i, '');
+                    }
+                }
                 
                 store.set({
                     id,
                     data: { 
                         title: id, 
-                        pubDate: fileDate // Now using the real file date!
+                        pubDate: finalDate 
                     },
                     body: content
                 });
