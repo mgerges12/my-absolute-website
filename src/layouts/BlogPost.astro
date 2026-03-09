@@ -7,7 +7,7 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'poems'>['data'] | CollectionEntry<'stories'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate } = Astro.props;
 ---
 
 <html lang="en">
@@ -20,22 +20,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				margin: 0;
 			}
 			.prose-container {
-				width: 1000px; /* Wider for complex indentations */
+				width: 1000px;
 				max-width: calc(100% - 2em);
 				margin: auto;
 				padding: 2em 1em;
 				color: white;
                 text-align: left;
 			}
-            /* The Absolute Fix: Preformatted Text */
-            .writing-content {
-                font-family: 'Office Code Pro', monospace !important;
-                font-size: 1.1rem;
-                line-height: 1.4;
-                white-space: pre; /* Forces every tab and space to show */
-                overflow-x: auto; /* Adds a scrollbar if an indent is too wide for mobile */
-                margin-top: 2rem;
-            }
             :global(.light-mode) .prose-container {
                 color: black;
             }
@@ -70,7 +61,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 					</div>
 					<h1>{title}</h1>
 				</div>
-                <pre class="writing-content"><slot /></pre>
+                <slot />
 			</article>
 		</main>
 		<Footer />

@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
@@ -11,9 +11,25 @@ export async function getStaticPaths() {
 }
 
 const poem = Astro.props;
-const { Content } = await render(poem);
+// The Magic Fix: We are grabbing the RAW body of the file, ignoring the Markdown cleaner.
+const rawContent = poem.body;
 ---
 
 <Layout {...poem.data}>
-	<Content />
+	<pre class="raw-writing">{rawContent}</pre>
 </Layout>
+
+<style>
+    .raw-writing {
+        font-family: 'Office Code Pro', monospace !important;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        white-space: pre; /* Forces the browser to show EVERY space and tab */
+        color: inherit;
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        overflow-x: auto;
+    }
+</style>
