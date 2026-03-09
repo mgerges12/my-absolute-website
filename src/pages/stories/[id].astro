@@ -1,6 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/BlogPost.astro';
+import fs from 'node:fs';
 
 export async function getStaticPaths() {
 	const stories = await getCollection('stories');
@@ -30,7 +31,9 @@ googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit')
 googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
 googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0 !important;');
 googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0 !important;');
-googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !important;');
+googleStyles = googleStyles.replace(/margin-top:.*?;/g, 'margin-top:0 !important;');
+googleStyles = googleStyles.replace(/margin-bottom:.*?;/g, 'margin-bottom:0 !important;');
+googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.1 !important;');
 ---
 
 <Layout title={story.data.title || story.id} pubDate={story.data.pubDate || new Date()}>
@@ -42,7 +45,7 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !impor
     .absolute-rendering {
         font-family: 'Office Code Pro', monospace !important;
         font-size: 1.1rem;
-        line-height: 1.0 !important;
+        line-height: 1.1 !important;
         color: inherit;
         background: transparent;
         border: none;
@@ -54,9 +57,19 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !impor
     .absolute-rendering :global(*) {
         font-family: 'Office Code Pro', monospace !important;
         color: inherit !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        line-height: 1.0 !important;
+        background-color: transparent !important;
+    }
+
+    .absolute-rendering :global(p), 
+    .absolute-rendering :global(span), 
+    .absolute-rendering :global(div),
+    .absolute-rendering :global(h1),
+    .absolute-rendering :global(h2) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        line-height: 1.1 !important;
     }
 
     :global(strong) {
