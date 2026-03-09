@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'poems'>['data'] | CollectionEntry<'stories'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
@@ -19,50 +19,49 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				max-width: 100%;
 				margin: 0;
 			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 0;
-				border: 1px solid white;
-			}
 			.prose {
-				width: 720px;
+				width: 800px;
 				max-width: calc(100% - 2em);
 				margin: auto;
-				padding: 1em;
+				padding: 2em 1em;
 				color: white;
-                white-space: pre-wrap; /* Keeps your exact spacing and line breaks */
-                text-align: left; /* Keep writing left-aligned for better readability */
+                /* The Magic: This makes it look exactly like your text editor */
+                white-space: pre-wrap; 
+                font-family: 'Office Code Pro', monospace !important;
+                font-size: 1.1rem;
+                line-height: 1.5;
+                text-align: left;
 			}
+            /* Remove standard margins that Markdown adds */
+            .prose :global(p) {
+                margin: 0;
+                padding: 0;
+            }
+            .prose :global(h1), .prose :global(h2), .prose :global(h3) {
+                text-align: left;
+                margin-bottom: 1rem;
+            }
+            :global(.light-mode) .prose {
+                color: black;
+            }
 			.title {
-				margin-bottom: 2em;
+				margin-bottom: 2rem;
 				padding: 2em 0;
 				text-align: center;
-				line-height: 1;
-				border-bottom: 1px solid white;
+				border-bottom: 1px solid #333;
 			}
+            :global(.light-mode) .title {
+                border-bottom: 1px solid #ddd;
+            }
 			.title h1 {
 				margin: 0 0 0.5em 0;
-				font-family: 'Terminal Grotesque', sans-serif;
-				text-transform: uppercase;
-				font-size: 4rem;
+				font-size: 3rem;
+                text-transform: uppercase;
 			}
 			.date {
 				margin-bottom: 0.5em;
 				color: #888;
-				font-family: 'Office Code Pro', monospace;
 			}
-			.last-updated-on {
-				font-style: italic;
-			}
-            hr {
-                border: none;
-                border-top: 1px solid white;
-                margin: 2rem 0;
-            }
 		</style>
 	</head>
 
@@ -70,20 +69,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage.src} alt="" />}
-				</div>
 				<div class="prose">
 					<div class="title">
 						<div class="date">
 							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
 						</div>
 						<h1>{title}</h1>
 					</div>
