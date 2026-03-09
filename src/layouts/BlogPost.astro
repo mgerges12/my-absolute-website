@@ -13,9 +13,8 @@ const { title, description, pubDate } = Astro.props;
 const isVideosPage = title.toLowerCase() === 'videos';
 const isWritingList = title.toLowerCase() === 'writing';
 
-let titleSize = '4rem'; // Default size for individual pieces
-if (isVideosPage) titleSize = '6rem';
-if (isWritingList) titleSize = '4rem';
+// Now both main section headers are 4rem
+let titleSize = '4rem'; 
 ---
 
 <html lang="en">
