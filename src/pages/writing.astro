@@ -2,15 +2,24 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/BlogPost.astro';
 
-// Smart Title Formatter
+// THE ULTIMATE TITLE FORMATTER
 export const formatTitle = (id: string) => {
-    return id
-        .split('-')
+    // 1. Handle CamelCase (e.g., SineSpeSperans -> Sine Spe Sperans)
+    let result = id.replace(/([A-Z])/g, ' $1').trim();
+    
+    // 2. Handle Dashes (e.g., someday-ill -> someday ill)
+    result = result.replace(/-/g, ' ');
+    
+    // 3. Capitalize and handle conjunctions
+    return result
+        .split(/\s+/)
         .map(word => {
-            if (word === 'ill') return "I'll";
-            if (word === 'dont') return "Don't";
-            if (word === 'cant') return "Can't";
-            return word.charAt(0).toUpperCase() + word.slice(1);
+            const lower = word.toLowerCase();
+            if (lower === 'ill') return "I'll";
+            if (lower === 'dont') return "Don't";
+            if (lower === 'cant') return "Can't";
+            if (lower === 'im') return "I'm";
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
         })
         .join(' ');
 };
@@ -64,39 +73,5 @@ const stories = (await getCollection('stories')).sort(safeSort);
 </Layout>
 
 <style>
-    .writing-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-        margin-top: 2rem;
-    }
-    .writing-section h2 {
-        border-bottom: 1px solid white;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1.5rem;
-        text-align: left;
-    }
-    :global(.light-mode) .writing-section h2 {
-        border-bottom: 1px solid black;
-    }
-    ul {
-        list-style: none;
-        padding: 0;
-        text-align: left;
-    }
-    li {
-        margin-bottom: 1rem;
-    }
-    a {
-        font-size: 1.2rem;
-        border: none !important;
-    }
-    a:hover {
-        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-    }
-    @media (max-width: 720px) {
-        .writing-container {
-            grid-template-columns: 1fr;
-        }
-    }
+...
 </style>

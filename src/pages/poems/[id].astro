@@ -12,16 +12,19 @@ export async function getStaticPaths() {
 
 const poem = Astro.props;
 
-// Smart Title Formatter
+// THE ULTIMATE TITLE FORMATTER
 const formatTitle = (id: string) => {
-    return id
-        .split('-')
+    let result = id.replace(/([A-Z])/g, ' $1').trim();
+    result = result.replace(/-/g, ' ');
+    return result
+        .split(/\s+/)
         .map(word => {
             const lower = word.toLowerCase();
             if (lower === 'ill') return "I'll";
             if (lower === 'dont') return "Don't";
             if (lower === 'cant') return "Can't";
-            return word.charAt(0).toUpperCase() + word.slice(1);
+            if (lower === 'im') return "I'm";
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
         })
         .join(' ');
 };
@@ -38,20 +41,15 @@ if (rawContent.includes('<style')) {
     }
 }
 
-// 1. Clean up Google's defaults
 googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
 googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit');
 googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
-
-// 2. The Size Crusher
 googleStyles = googleStyles.replace(/font-size:.*?;/g, 'font-size:inherit !important;');
-
-// 3. Vertical Spacing: Crushing gaps but adding BREATHING ROOM to line-height
 googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0 !important;');
 googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0 !important;');
 googleStyles = googleStyles.replace(/margin-top:.*?;/g, 'margin-top:0 !important;');
 googleStyles = googleStyles.replace(/margin-bottom:.*?;/g, 'margin-bottom:0 !important;');
-googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.4 !important;'); // Increased for breathing room
+googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.4 !important;');
 ---
 
 <Layout title={formatTitle(poem.id)} pubDate={poem.data.pubDate || new Date()}>
@@ -60,35 +58,5 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.4 !impor
 </Layout>
 
 <style>
-    .absolute-rendering {
-        font-family: 'Office Code Pro', monospace !important;
-        font-size: 1.4rem !important;
-        line-height: 1.4 !important; /* Forces breathing room */
-        color: var(--accent) !important;
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin: 0;
-        text-align: left;
-        white-space: pre-wrap !important;
-        tab-size: 4 !important;
-    }
-    
-    :global(.light-mode) .absolute-rendering {
-        color: #008000 !important;
-    }
-
-    .absolute-rendering :global(*) {
-        font-family: 'Office Code Pro', monospace !important;
-        font-size: 1.4rem !important; 
-        color: inherit !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        padding: 0 !important;
-        line-height: 1.4 !important; /* Ensures consistency across all tags */
-    }
-
-    :global(strong), .absolute-rendering :global(strong), .absolute-rendering :global(b) {
-        font-weight: bold !important;
-    }
+...
 </style>
