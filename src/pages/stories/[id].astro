@@ -12,14 +12,14 @@ export async function getStaticPaths() {
 
 const story = Astro.props;
 
-// The Absolute Renderer: 
-// 1. We take the raw text.
-// 2. We manually convert ***bold-italic***, **bold**, and *italic* to HTML.
-// 3. We keep all spaces and tabs intact.
+// The Absolute Force Renderer:
 const rawContent = story.body
     .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+    .replace(/  /g, '&nbsp;&nbsp;')
+    .replace(/\n/g, '<br />');
 ---
 
 <Layout {...story.data}>
@@ -28,11 +28,9 @@ const rawContent = story.body
 
 <style>
     .absolute-rendering {
-        font-family: 'Office Code Pro', monospace !important;
+        font-family: 'Office Code Pro', 'Courier New', monospace !important;
         font-size: 1.1rem;
-        line-height: 1.5;
-        white-space: pre-wrap; /* The Magic: Preserves ALL spaces, tabs, and line breaks */
-        tab-size: 4; /* Ensures tabs are wide and visible */
+        line-height: 1.6;
         color: inherit;
         background: transparent;
         border: none;

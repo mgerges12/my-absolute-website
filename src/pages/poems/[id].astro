@@ -12,14 +12,18 @@ export async function getStaticPaths() {
 
 const poem = Astro.props;
 
-// The Absolute Renderer: 
-// 1. We take the raw text.
-// 2. We manually convert ***bold-italic***, **bold**, and *italic* to HTML.
-// 3. We keep all spaces and tabs intact.
+// The Absolute Force Renderer:
+// 1. Preserve Bold/Italic
+// 2. Convert Tabs to 4 hard spaces
+// 3. Convert multiple spaces to hard spaces
+// 4. Convert newlines to physical breaks
 const rawContent = poem.body
     .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;') // Hard-code tabs
+    .replace(/  /g, '&nbsp;&nbsp;') // Preserve double spaces
+    .replace(/\n/g, '<br />'); // Force every single newline
 ---
 
 <Layout {...poem.data}>
@@ -28,23 +32,20 @@ const rawContent = poem.body
 
 <style>
     .absolute-rendering {
-        font-family: 'Office Code Pro', monospace !important;
+        font-family: 'Office Code Pro', 'Courier New', monospace !important;
         font-size: 1.1rem;
-        line-height: 1.5;
-        white-space: pre-wrap; /* The Magic: Preserves ALL spaces, tabs, and line breaks */
-        tab-size: 4; /* Ensures tabs are wide and visible */
+        line-height: 1.6;
         color: inherit;
         background: transparent;
         border: none;
         padding: 0;
         margin: 0;
-        text-align: left; /* Essential for staggered poetry */
+        text-align: left;
     }
     
-    /* Ensure the rendered tags look right */
     .absolute-rendering strong {
         font-weight: bold;
-        color: var(--accent); /* Keep that nice green color for bolded titles */
+        color: var(--accent);
     }
     :global(.light-mode) .absolute-rendering strong {
         color: #008000;
