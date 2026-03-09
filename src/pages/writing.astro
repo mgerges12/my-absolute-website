@@ -2,15 +2,10 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/BlogPost.astro';
 
-// THE ULTIMATE TITLE FORMATTER
+// Smart Title Formatter
 export const formatTitle = (id: string) => {
-    // 1. Handle CamelCase (e.g., SineSpeSperans -> Sine Spe Sperans)
     let result = id.replace(/([A-Z])/g, ' $1').trim();
-    
-    // 2. Handle Dashes (e.g., someday-ill -> someday ill)
     result = result.replace(/-/g, ' ');
-    
-    // 3. Capitalize and handle conjunctions
     return result
         .split(/\s+/)
         .map(word => {
@@ -56,7 +51,7 @@ const stories = (await getCollection('stories')).sort(safeSort);
         </section>
 
         <section class="writing-section">
-            <h2>Stories</h2>
+            <h2>Short Stories</h2>
             {stories.length > 0 ? (
                 <ul>
                     {stories.map((story) => (
@@ -73,5 +68,50 @@ const stories = (await getCollection('stories')).sort(safeSort);
 </Layout>
 
 <style>
-...
+    .writing-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 4rem;
+        margin-top: 4rem;
+        width: 100%;
+    }
+    .writing-section {
+        flex: 1;
+    }
+    .writing-section h2 {
+        border-bottom: 1px solid var(--accent);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        text-align: left;
+        color: var(--accent);
+    }
+    :global(.light-mode) .writing-section h2 {
+        color: #008000;
+        border-bottom: 1px solid #008000;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+        text-align: left;
+    }
+    li {
+        margin-bottom: 1rem;
+    }
+    a {
+        font-size: 1.2rem;
+        border: none !important;
+        color: inherit;
+    }
+    a:hover {
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+    :global(.light-mode) a:hover {
+        text-shadow: 0 0 10px rgba(0, 128, 0, 0.2);
+    }
+    @media (max-width: 720px) {
+        .writing-container {
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
 </style>
