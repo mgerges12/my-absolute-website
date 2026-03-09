@@ -1,3 +1,4 @@
+// Force redeploy to clear Vercel cache - March 08 2026
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import fs from 'node:fs';
