@@ -13,19 +13,35 @@ function rawHtmlLoader(basePath: string) {
             
             const files = fs.readdirSync(dir).filter(f => f.endsWith('.html') || f.endsWith('.md'));
             
+            // Map to store the latest version of each file by its normalized ID
+            const latestFiles = new Map();
+
             for (const file of files) {
                 const filePath = path.join(dir, file);
-                let content = fs.readFileSync(filePath, 'utf-8');
-                const id = file.replace(/\.(html|md)$/, '');
+                const stats = fs.statSync(filePath);
                 
-                // Detect explicit pubDate: in the content
-                let finalDate = fs.statSync(filePath).mtime;
+                // Normalize ID: "Someday-Ill-Love-Myself" and "SomedayIllLoveMyself" 
+                // both become "somedayilllovemyself" for comparison
+                const id = file.replace(/\.(html|md)$/, '');
+                const normalizedId = id.toLowerCase().replace(/[^a-z0-9]/g, '');
+                
+                if (!latestFiles.has(normalizedId) || stats.mtime > latestFiles.get(normalizedId).mtime) {
+                    latestFiles.set(normalizedId, {
+                        id, // Keep the original ID for the store
+                        filePath,
+                        mtime: stats.mtime
+                    });
+                }
+            }
+            
+            for (const { id, filePath, mtime } of latestFiles.values()) {
+                let content = fs.readFileSync(filePath, 'utf-8');
+                let finalDate = mtime;
                 const dateMatch = content.match(/pubDate:\s*(.*)/i);
                 if (dateMatch) {
                     const parsedDate = new Date(dateMatch[1]);
                     if (!isNaN(parsedDate.getTime())) {
                         finalDate = parsedDate;
-                        // Clean up the pubDate line so it doesn't show in the body
                         content = content.replace(/pubDate:\s*.*\n?/i, '');
                     }
                 }
