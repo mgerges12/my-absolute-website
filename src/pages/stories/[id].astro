@@ -11,26 +11,41 @@ export async function getStaticPaths() {
 }
 
 const story = Astro.props;
-// The Magic Fix: We are grabbing the RAW body of the file, ignoring the Markdown cleaner.
-const rawContent = story.body;
+
+// The Absolute Renderer: 
+// 1. We take the raw text.
+// 2. We manually convert ***bold-italic***, **bold**, and *italic* to HTML.
+// 3. We keep all spaces and tabs intact.
+const rawContent = story.body
+    .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>');
 ---
 
 <Layout {...story.data}>
-	<pre class="raw-writing">{rawContent}</pre>
+	<div class="absolute-rendering" set:html={rawContent}></div>
 </Layout>
 
 <style>
-    .raw-writing {
+    .absolute-rendering {
         font-family: 'Office Code Pro', monospace !important;
         font-size: 1.1rem;
         line-height: 1.5;
-        white-space: pre; /* Forces the browser to show EVERY space and tab */
-        tab-size: 4; /* Ensures tabs are respected and visible */
+        white-space: pre-wrap; /* The Magic: Preserves ALL spaces, tabs, and line breaks */
+        tab-size: 4; /* Ensures tabs are wide and visible */
         color: inherit;
         background: transparent;
         border: none;
         padding: 0;
         margin: 0;
-        overflow-x: auto;
+        text-align: left;
+    }
+    
+    .absolute-rendering strong {
+        font-weight: bold;
+        color: var(--accent);
+    }
+    :global(.light-mode) .absolute-rendering strong {
+        color: #008000;
     }
 </style>
