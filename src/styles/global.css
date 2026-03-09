@@ -15,14 +15,14 @@
 }
 
 body {
-	font-family: 'Terminal Grotesque', sans-serif !important; /* Terminal font for everything */
+	font-family: 'Office Code Pro', monospace !important; /* Swapped to Office Code Pro */
 	margin: 0;
 	padding: 0;
 	text-align: left;
 	background: #000000;
 	color: white;
-	font-size: 20px;
-	line-height: 1.4;
+	font-size: 18px;
+	line-height: 1.6;
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦖</text></svg>") 16 0, auto;
     transition: background 0.3s ease;
     overflow-x: hidden;
@@ -34,7 +34,7 @@ body.light-mode {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Terminal Grotesque', sans-serif !important;
+	font-family: 'Office Code Pro', monospace !important;
 	font-weight: normal;
 	margin: 0 0 1rem 0;
 	color: var(--accent); /* Light green by default */
@@ -53,10 +53,10 @@ body.light-mode h6 {
 }
 
 h1 {
-	font-size: clamp(3rem, 10vw, 6rem);
+	font-size: clamp(2.5rem, 8vw, 5rem); /* Slightly smaller for monospace font */
 	text-transform: lowercase;
 	margin-bottom: 2rem;
-	letter-spacing: -2px;
+	letter-spacing: -1px;
 	transition: all 0.3s ease;
 }
 
