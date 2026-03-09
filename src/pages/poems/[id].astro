@@ -16,16 +16,21 @@ const poem = Astro.props;
 // Detect if it's an HTML file
 const isHtml = poem.id.endsWith('.html');
 let rawContent = "";
+let googleStyles = "";
 
 if (isHtml) {
-    // Read the HTML file directly and extract the body content
     const filePath = `./src/content/poems/${poem.id}`;
     const fullHtml = fs.readFileSync(filePath, 'utf-8');
-    // Grab everything between <body> tags
+    
+    // 1. Extract the secret Google Docs styles
+    const styleMatch = fullHtml.match(/<style[^>]*>([\s\S]*)<\/style>/i);
+    googleStyles = styleMatch ? styleMatch[1] : "";
+    
+    // 2. Extract the body content
     const bodyMatch = fullHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     rawContent = bodyMatch ? bodyMatch[1] : fullHtml;
 } else {
-    // Use the Absolute Force Renderer for Markdown/Text
+    // Standard renderer for non-HTML files
     rawContent = poem.body
         .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -37,6 +42,7 @@ if (isHtml) {
 ---
 
 <Layout title={poem.data.title || poem.id} pubDate={poem.data.pubDate || new Date()}>
+    {isHtml && <style set:html={googleStyles}></style>}
 	<div class="absolute-rendering" set:html={rawContent}></div>
 </Layout>
 
@@ -53,7 +59,7 @@ if (isHtml) {
         text-align: left;
     }
     
-    /* Force Office Code Pro onto Google Docs HTML */
+    /* Ensure the Office Code Pro font wins over Google's default fonts */
     .absolute-rendering :global(*) {
         font-family: 'Office Code Pro', monospace !important;
     }

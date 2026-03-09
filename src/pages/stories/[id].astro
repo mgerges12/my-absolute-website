@@ -15,10 +15,13 @@ const story = Astro.props;
 
 const isHtml = story.id.endsWith('.html');
 let rawContent = "";
+let googleStyles = "";
 
 if (isHtml) {
     const filePath = `./src/content/stories/${story.id}`;
     const fullHtml = fs.readFileSync(filePath, 'utf-8');
+    const styleMatch = fullHtml.match(/<style[^>]*>([\s\S]*)<\/style>/i);
+    googleStyles = styleMatch ? styleMatch[1] : "";
     const bodyMatch = fullHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     rawContent = bodyMatch ? bodyMatch[1] : fullHtml;
 } else {
@@ -33,6 +36,7 @@ if (isHtml) {
 ---
 
 <Layout title={story.data.title || story.id} pubDate={story.data.pubDate || new Date()}>
+    {isHtml && <style set:html={googleStyles}></style>}
 	<div class="absolute-rendering" set:html={rawContent}></div>
 </Layout>
 
