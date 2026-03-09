@@ -9,14 +9,19 @@ type Props = CollectionEntry<'poems'>['data'] | CollectionEntry<'stories'>['data
 
 const { title, description, pubDate } = Astro.props;
 
-// Detect if we are on the main listing page or an individual piece
-const isListingPage = title.toLowerCase() === 'writing';
+// Specific size logic for different page types
+const isVideosPage = title.toLowerCase() === 'videos';
+const isWritingList = title.toLowerCase() === 'writing';
+
+let titleSize = '4rem'; // Default size for individual pieces
+if (isVideosPage) titleSize = '6rem';
+if (isWritingList) titleSize = '4rem';
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style define:vars={{ titleSize: isListingPage ? '4rem' : '8rem' }}>
+		<style define:vars={{ titleSize }}>
 			main {
 				width: calc(100% - 2em);
 				max-width: 100%;
@@ -54,11 +59,11 @@ const isListingPage = title.toLowerCase() === 'writing';
             }
 			.title-section h1 {
 				margin: 0;
-				font-size: var(--titleSize); /* Adaptive Title Size */
+				font-size: var(--titleSize); 
                 text-transform: uppercase;
                 display: inline-block;
-                letter-spacing: -3px;
-                line-height: 0.9;
+                letter-spacing: -2px;
+                line-height: 1;
 			}
 			.date {
 				margin-bottom: 0.5em;
@@ -73,9 +78,9 @@ const isListingPage = title.toLowerCase() === 'writing';
 		<main>
 			<article class="prose-container">
 				<div class="title-section">
-                    {!isListingPage && <a href="/writing" class="back-link" title="back to writing">← back</a>}
+                    {(!isVideosPage && !isWritingList) && <a href="/writing" class="back-link" title="back to writing">← back</a>}
 					<div class="date">
-						{!isListingPage && <FormattedDate date={pubDate} />}
+						{(!isVideosPage && !isWritingList) && <FormattedDate date={pubDate} />}
 					</div>
 					<h1>{title}</h1>
 				</div>
