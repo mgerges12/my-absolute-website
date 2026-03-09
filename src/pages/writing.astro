@@ -2,21 +2,15 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/BlogPost.astro';
 
-const poems = (await getCollection('poems')).sort(
-	(a, b) => {
-        const dateA = a.data.pubDate ? b.data.pubDate.valueOf() : 0;
-        const dateB = b.data.pubDate ? b.data.pubDate.valueOf() : 0;
-        return dateB - dateA;
-    }
-);
+// Safe sorting function that handles missing dates
+const safeSort = (a, b) => {
+    const dateA = a.data.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
+    const dateB = b.data.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
+    return dateB - dateA;
+};
 
-const stories = (await getCollection('stories')).sort(
-	(a, b) => {
-        const dateA = a.data.pubDate ? b.data.pubDate.valueOf() : 0;
-        const dateB = b.data.pubDate ? b.data.pubDate.valueOf() : 0;
-        return dateB - dateA;
-    }
-);
+const poems = (await getCollection('poems')).sort(safeSort);
+const stories = (await getCollection('stories')).sort(safeSort);
 ---
 
 <Layout

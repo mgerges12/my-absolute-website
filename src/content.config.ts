@@ -2,21 +2,21 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const poems = defineCollection({
-	// Now looking for .md, .mdx, and .txt files!
-	loader: glob({ base: './src/content/poems', pattern: '**/*.{md,mdx,txt}' }),
+	// Now accepting .md, .mdx, .txt, AND .html!
+	loader: glob({ base: './src/content/poems', pattern: '**/*.{md,mdx,txt,html}' }),
 	schema: z.object({
-		title: z.string().optional(), // Now optional
+		title: z.string().optional(),
 		description: z.string().optional(),
-		pubDate: z.coerce.date().optional(), // Now optional
+		pubDate: z.coerce.date().optional(),
 	}),
 });
 
 const stories = defineCollection({
-	loader: glob({ base: './src/content/stories', pattern: '**/*.{md,mdx,txt}' }),
+	loader: glob({ base: './src/content/stories', pattern: '**/*.{md,mdx,txt,html}' }),
 	schema: z.object({
-		title: z.string().optional(), // Now optional
+		title: z.string().optional(),
 		description: z.string().optional(),
-		pubDate: z.coerce.date().optional(), // Now optional
+		pubDate: z.coerce.date().optional(),
 	}),
 });
 
