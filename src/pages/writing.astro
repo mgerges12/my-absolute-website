@@ -2,7 +2,19 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/BlogPost.astro';
 
-// Safe sorting function that handles missing dates
+// Smart Title Formatter
+export const formatTitle = (id: string) => {
+    return id
+        .split('-')
+        .map(word => {
+            if (word === 'ill') return "I'll";
+            if (word === 'dont') return "Don't";
+            if (word === 'cant') return "Can't";
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ');
+};
+
 const safeSort = (a, b) => {
     const dateA = a.data.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
     const dateB = b.data.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
@@ -25,7 +37,7 @@ const stories = (await getCollection('stories')).sort(safeSort);
                 <ul>
                     {poems.map((poem) => (
                         <li>
-                            <a href={`/poems/${poem.id}/`}>{poem.data.title || poem.id}</a>
+                            <a href={`/poems/${poem.id}/`}>{formatTitle(poem.id)}</a>
                         </li>
                     ))}
                 </ul>
@@ -40,7 +52,7 @@ const stories = (await getCollection('stories')).sort(safeSort);
                 <ul>
                     {stories.map((story) => (
                         <li>
-                            <a href={`/stories/${story.id}/`}>{story.data.title || story.id}</a>
+                            <a href={`/stories/${story.id}/`}>{formatTitle(story.id)}</a>
                         </li>
                     ))}
                 </ul>

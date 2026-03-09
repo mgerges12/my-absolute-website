@@ -15,29 +15,29 @@
 }
 
 body {
-	font-family: 'Office Code Pro', monospace !important; /* Swapped to Office Code Pro */
+	font-family: 'Office Code Pro', monospace !important;
 	margin: 0;
 	padding: 0;
 	text-align: left;
 	background: #000000;
-	color: white;
+	color: var(--accent); /* Body text is now Green by default */
 	font-size: 18px;
 	line-height: 1.6;
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦖</text></svg>") 16 0, auto;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
 }
 
 body.light-mode {
     background: #ffffff;
-    color: #000000;
+    color: #008000; /* Darker Green for Light Mode */
 }
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Office Code Pro', monospace !important;
 	font-weight: normal;
 	margin: 0 0 1rem 0;
-	color: var(--accent); /* Light green by default */
+	color: var(--accent);
 	line-height: 1.1;
 	text-transform: uppercase;
     text-align: center;
@@ -49,11 +49,11 @@ body.light-mode h3,
 body.light-mode h4, 
 body.light-mode h5, 
 body.light-mode h6 {
-    color: #008000; /* Darker green for Light Mode */
+    color: #008000;
 }
 
 h1 {
-	font-size: clamp(2.5rem, 8vw, 5rem); /* Slightly smaller for monospace font */
+	font-size: clamp(2.5rem, 8vw, 5rem);
 	text-transform: lowercase;
 	margin-bottom: 2rem;
 	letter-spacing: -1px;
@@ -78,33 +78,29 @@ main {
 }
 
 a {
-	color: white;
+	color: inherit; /* Links now follow the green text color */
 	text-decoration: none;
 	transition: all 0.3s ease;
 }
 
-body.light-mode a {
-    color: #000000;
-}
-
 a:hover, button:hover {
 	cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🍖</text></svg>") 16 0, auto;
-    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    text-shadow: 0 0 10px rgba(0,255,0,0.5);
 }
 
 body.light-mode a:hover {
-    text-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-shadow: 0 0 10px rgba(0,128,0,0.2);
 }
 
 .video-container {
-	border: 1px solid white;
+	border: 1px solid var(--accent);
 	margin: 3rem auto;
     width: 100%;
 	background: #000;
 }
 
 body.light-mode .video-container {
-    border: 1px solid black;
+    border: 1px solid #008000;
     background: #eee;
 }
 
