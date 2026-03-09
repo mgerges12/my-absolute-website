@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
@@ -11,39 +11,64 @@ export async function getStaticPaths() {
 }
 
 const poem = Astro.props;
-// Point to the PDF file in the public folder
-const pdfPath = `/${poem.id}.pdf`;
+
+// Use the raw HTML content from our custom loader
+let rawContent = poem.body;
+let googleStyles = "";
+
+// Extract secret Google styles if they exist in the body
+if (rawContent.includes('<style')) {
+    const styleMatch = rawContent.match(/<style[^>]*>([\s\S]*)<\/style>/i);
+    googleStyles = styleMatch ? styleMatch[1] : "";
+    
+    // Extract body content
+    const bodyMatch = rawContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    if (bodyMatch) {
+        rawContent = bodyMatch[1];
+    }
+}
+
+// Absolute Crushing Logic
+googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
+googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit');
+googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
+googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0 !important;');
+googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0 !important;');
+googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !important;'); // Total crush
 ---
 
 <Layout title={poem.data.title || poem.id} pubDate={poem.data.pubDate || new Date()}>
-	<div class="pdf-container">
-        <embed 
-            src={pdfPath} 
-            type="application/pdf" 
-            width="100%" 
-            height="1000px" 
-        />
-        <div class="pdf-fallback">
-            <p>It looks like your browser doesn't support embedded PDFs. 
-               <a href={pdfPath}>Click here to view the poem directly.</a>
-            </p>
-        </div>
-    </div>
+    {googleStyles && <style set:html={googleStyles}></style>}
+	<div class="absolute-rendering" set:html={rawContent}></div>
 </Layout>
 
 <style>
-    .pdf-container {
-        width: 100%;
-        margin-top: 2rem;
-        border: 1px solid #333;
-        background: white; /* PDFs look best on a white page background */
+    .absolute-rendering {
+        font-family: 'Office Code Pro', monospace !important;
+        font-size: 1.1rem;
+        line-height: 1.0 !important; /* Forces absolute vertical tightness */
+        color: inherit;
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
     }
-    :global(.light-mode) .pdf-container {
-        border: 1px solid #ddd;
+    
+    /* Force EVERY child element to lose its margins and padding */
+    .absolute-rendering :global(*) {
+        font-family: 'Office Code Pro', monospace !important;
+        color: inherit !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.0 !important;
     }
-    .pdf-fallback {
-        padding: 2rem;
-        text-align: center;
-        display: none; /* Hide unless the embed fails */
+
+    :global(strong) {
+        font-weight: bold;
+        color: var(--accent);
+    }
+    :global(.light-mode strong) {
+        color: #008000;
     }
 </style>
