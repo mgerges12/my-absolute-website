@@ -1,6 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/BlogPost.astro';
+import fs from 'node:fs';
 
 export async function getStaticPaths() {
 	const poems = await getCollection('poems');
@@ -12,27 +13,32 @@ export async function getStaticPaths() {
 
 const poem = Astro.props;
 
-// The Absolute Force Renderer:
-// 1. Preserve Bold/Italic
-// 2. Convert Tabs to 4 hard spaces
-// 3. Convert multiple spaces to hard spaces
-// 4. Convert newlines to physical breaks
-const rawContent = poem.body
+// The Ultimate Fix: Replace every single space with a 'Hard' space so the browser can't ignore it.
+const filePath = `./src/content/poems/${poem.id}.mdx`;
+let rawBody = "";
+try {
+    const fullContent = fs.readFileSync(filePath, 'utf-8');
+    rawBody = fullContent.split('---').slice(2).join('---').trim();
+} catch (e) {
+    rawBody = poem.body;
+}
+
+const rawContent = rawBody
     .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;') // Hard-code tabs
-    .replace(/  /g, '&nbsp;&nbsp;') // Preserve double spaces
-    .replace(/\n/g, '<br />'); // Force every single newline
+    .replace(/ /g, '&nbsp;') // Force EVERY single space
+    .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;') // Force tabs
+    .replace(/\n/g, '<br />'); // Force newlines
 ---
 
-<Layout {...poem.data}>
+<Layout title={poem.data.title || poem.id} pubDate={poem.data.pubDate || new Date()}>
 	<div class="absolute-rendering" set:html={rawContent}></div>
 </Layout>
 
 <style>
     .absolute-rendering {
-        font-family: 'Office Code Pro', 'Courier New', monospace !important;
+        font-family: 'Office Code Pro', monospace !important;
         font-size: 1.1rem;
         line-height: 1.6;
         color: inherit;
@@ -43,11 +49,11 @@ const rawContent = poem.body
         text-align: left;
     }
     
-    .absolute-rendering strong {
+    :global(strong) {
         font-weight: bold;
         color: var(--accent);
     }
-    :global(.light-mode) .absolute-rendering strong {
+    :global(.light-mode strong) {
         color: #008000;
     }
 </style>

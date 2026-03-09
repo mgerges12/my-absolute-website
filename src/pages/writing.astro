@@ -3,11 +3,19 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/BlogPost.astro';
 
 const poems = (await getCollection('poems')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => {
+        const dateA = a.data.pubDate ? b.data.pubDate.valueOf() : 0;
+        const dateB = b.data.pubDate ? b.data.pubDate.valueOf() : 0;
+        return dateB - dateA;
+    }
 );
 
 const stories = (await getCollection('stories')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => {
+        const dateA = a.data.pubDate ? b.data.pubDate.valueOf() : 0;
+        const dateB = b.data.pubDate ? b.data.pubDate.valueOf() : 0;
+        return dateB - dateA;
+    }
 );
 ---
 
@@ -23,7 +31,7 @@ const stories = (await getCollection('stories')).sort(
                 <ul>
                     {poems.map((poem) => (
                         <li>
-                            <a href={`/poems/${poem.id}/`}>{poem.data.title}</a>
+                            <a href={`/poems/${poem.id}/`}>{poem.data.title || poem.id}</a>
                         </li>
                     ))}
                 </ul>
@@ -38,7 +46,7 @@ const stories = (await getCollection('stories')).sort(
                 <ul>
                     {stories.map((story) => (
                         <li>
-                            <a href={`/stories/${story.id}/`}>{story.data.title}</a>
+                            <a href={`/stories/${story.id}/`}>{story.data.title || story.id}</a>
                         </li>
                     ))}
                 </ul>
