@@ -41,6 +41,7 @@ if (rawContent.includes('<style')) {
 googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
 googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit');
 googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
+googleStyles = googleStyles.replace(/font-size:.*?;/g, 'font-size:inherit !important;');
 googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0 !important;');
 googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0 !important;');
 googleStyles = googleStyles.replace(/margin-top:.*?;/g, 'margin-top:0 !important;');
@@ -56,7 +57,7 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !impor
 <style>
     .absolute-rendering {
         font-family: 'Office Code Pro', monospace !important;
-        font-size: 1.4rem; /* Larger text size */
+        font-size: 1.4rem !important;
         line-height: 1.0 !important;
         color: var(--accent) !important;
         background: transparent;
@@ -74,6 +75,7 @@ googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.0 !impor
 
     .absolute-rendering :global(*) {
         font-family: 'Office Code Pro', monospace !important;
+        font-size: 1.4rem !important;
         color: inherit !important;
         margin-top: 0 !important;
         margin-bottom: 0 !important;
