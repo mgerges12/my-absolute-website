@@ -32,10 +32,10 @@ body.light-mode {
     background: #ffffff;
     color: #000000;
 }
-
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Terminal Grotesque', sans-serif; /* Restored Terminal look */
+	font-family: 'Terminal Grotesque', sans-serif !important;
 	font-weight: normal;
+...
 	margin: 0 0 1rem 0;
 	color: white;
 	line-height: 1.1;
