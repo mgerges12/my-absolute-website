@@ -12,10 +12,10 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	</head>
 	<body>
 		<Header />
-		<main>
+		<main style="text-align: left;">
 			<h1>{SITE_TITLE}</h1>
 			<p>
-				this is an absolte website. you have probably never seen such a thing.
+				this is an absolute website. it is an abyss you have probably never seen such a thing.
 			</p>
 			<p>
 				You have entered a realm of interesting, but ultimately meaningless content. Well, it's just some stuff I wrote and made because I'm a creative guy. Please enjoy your stay :)
@@ -23,13 +23,36 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 			<div class="video-container">
 				<iframe
-					src="https://www.youtube.com/embed/GVu-UNnZ74g"
+                    id="random-video"
+					src=""
 					title="absolute video"
 					frameborder="0"
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 					allowfullscreen
 				></iframe>
 			</div>
+
+            <script>
+                const videoIds = [
+                    'IqxPF_xFaWI', 'FwhpXrYCEjI', 'Z164gXVVWrg', 'U-eZh7QALjs',
+                    's3KDNFJFvm0', 'GVu-UNnZ74g', 'DHAHBiZEiHM', 'NIH7oa0XMgY',
+                    'bOi6W826X-0', 'MDMWXsEW_Mc', 'NoYNal4euhw', 'z06bDQydOes'
+                ];
+                
+                const randomId = videoIds[Math.floor(Math.random() * videoIds.length)];
+                const iframe = document.getElementById('random-video') as HTMLIFrameElement;
+                if (iframe) {
+                    iframe.src = `https://www.youtube.com/embed/${randomId}`;
+                }
+            </script>
+
+            <br />
+            <br />
+            <br />
+
+            <p style="text-align: left;">
+                <a href="/secret" style="font-size: 1.8rem; color: inherit; text-decoration: none; border: none; text-shadow: none; cursor: default;">Remember</a>
+            </p>
 		</main>
 		<Footer />
 	</body>

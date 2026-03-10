@@ -12,6 +12,7 @@ const { title, description, pubDate } = Astro.props;
 // Specific size logic for different page types
 const isVideosPage = title.toLowerCase() === 'videos';
 const isWritingList = title.toLowerCase() === 'writing';
+const isSecretPage = title === '???';
 
 // Now both main section headers are 4rem
 let titleSize = '4rem'; 
@@ -86,9 +87,9 @@ let titleSize = '4rem';
 		<main>
 			<article class="prose-container">
 				<div class="title-section">
-                    {(!isVideosPage && !isWritingList) && <a href="/writing" class="back-link" title="back to writing">← back</a>}
+                    {(!isVideosPage && !isWritingList && !isSecretPage) && <a href="/writing" class="back-link" title="back to writing">← back</a>}
 					<div class="date">
-						{(!isVideosPage && !isWritingList) && <span>Last Updated: <FormattedDate date={pubDate} /></span>}
+						{(!isVideosPage && !isWritingList && !isSecretPage) && <span>Last Updated: <FormattedDate date={pubDate} /></span>}
 					</div>
 					<h1>{title}</h1>
 				</div>
