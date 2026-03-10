@@ -32,7 +32,7 @@ const stories = (await getCollection('stories')).sort(safeSort);
 <Layout
 	title="writing"
 	description="poems and stories from nowhere"
-	pubDate={new Date('March 08 2026')}
+	pubDate={new Date('March 09 2026')}
 >
 	<div class="writing-container">
         <section class="writing-section">
@@ -51,7 +51,7 @@ const stories = (await getCollection('stories')).sort(safeSort);
         </section>
 
         <section class="writing-section">
-            <h2>Short Stories</h2>
+            <h2>Stories</h2>
             {stories.length > 0 ? (
                 <ul>
                     {stories.map((story) => (

@@ -32,6 +32,11 @@ const formatTitle = (id: string) => {
 let rawContent = poem.body;
 let googleStyles = "";
 
+const shouldOverride = rawContent.includes('OVERRIDE_STYLE: TRUE');
+if (shouldOverride) {
+    rawContent = rawContent.replace('OVERRIDE_STYLE: TRUE', '');
+}
+
 if (rawContent.includes('<style')) {
     const styleMatch = rawContent.match(/<style[^>]*>([\s\S]*)<\/style>/i);
     googleStyles = styleMatch ? styleMatch[1] : "";
@@ -41,22 +46,38 @@ if (rawContent.includes('<style')) {
     }
 }
 
-googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
-googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit');
-googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
-googleStyles = googleStyles.replace(/font-size:.*?;/g, 'font-size:inherit !important;');
-googleStyles = googleStyles.replace(/padding-top:.*?;/g, 'padding-top:0 !important;');
-googleStyles = googleStyles.replace(/padding-bottom:.*?;/g, 'padding-bottom:0 !important;');
-googleStyles = googleStyles.replace(/margin-top:.*?;/g, 'margin-top:0 !important;');
-googleStyles = googleStyles.replace(/margin-bottom:.*?;/g, 'margin-bottom:0 !important;');
-googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.4 !important;');
+if (!shouldOverride) {
+    googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
+    googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit');
+    googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
+    googleStyles = googleStyles.replace(/font-size:.*?;/g, 'font-size:inherit !important;');
+    googleStyles = googleStyles.replace(/padding(-top|-bottom)?:.*?;/g, 'padding$1:0 !important;');
+    googleStyles = googleStyles.replace(/margin(-top|-bottom)?:.*?;/g, 'margin$1:0 !important;');
+    googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.4 !important;');
+} else {
+    // ALWAYS override color, background, and padding to ensure symmetry and contrast
+    googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
+    googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
+    googleStyles = googleStyles.replace(/padding(-top|-bottom)?:.*?;/g, 'padding$1:0 !important;');
+    googleStyles = googleStyles.replace(/margin(-top|-bottom)?:.*?;/g, 'margin$1:0 !important;');
+}
+const finalTitle = formatTitle(poem.id);
 ---
 
-<Layout title={formatTitle(poem.id)} pubDate={poem.data.pubDate || new Date()}>
+<Layout title={finalTitle} description={finalTitle} pubDate={poem.data.pubDate || new Date()}>
     {googleStyles && <style set:html={googleStyles}></style>}
 	<div class="absolute-rendering" set:html={rawContent}></div>
 </Layout>
 
 <style>
-...
+    .absolute-rendering {
+        width: 100%;
+    }
+    :global(.absolute-rendering h1), 
+    :global(.absolute-rendering h2), 
+    :global(.absolute-rendering h3) {
+        text-align: center !important;
+        width: 100%;
+        display: block;
+    }
 </style>

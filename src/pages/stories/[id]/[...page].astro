@@ -1,0 +1,180 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+	const stories = await getCollection('stories');
+	return stories.flatMap((story) => {
+        // Split content by our custom marker
+        const pages = story.body.split(/---PAGE---|&mdash;PAGE&mdash;/i);
+        
+        return pages.map((content, index) => ({
+            params: { 
+                id: story.id,
+                // If it's the first page, we don't need a suffix, 
+                // but for others we add /2, /3, etc.
+                page: index === 0 ? undefined : (index + 1).toString() 
+            },
+            props: { 
+                story, 
+                content, 
+                currentPage: index + 1, 
+                totalPages: pages.length 
+            },
+        }));
+    });
+}
+
+const { story, content, currentPage, totalPages } = Astro.props;
+
+// THE ULTIMATE TITLE FORMATTER
+const formatTitle = (id: string) => {
+    let result = id.replace(/([A-Z])/g, ' $1').trim();
+    result = result.replace(/-/g, ' ');
+    return result
+        .split(/\s+/)
+        .map(word => {
+            const lower = word.toLowerCase();
+            if (lower === 'ill') return "I'll";
+            if (lower === 'dont') return "Don't";
+            if (lower === 'cant') return "Can't";
+            if (lower === 'im') return "I'm";
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join(' ');
+};
+
+let rawContent = content;
+let googleStyles = "";
+
+const shouldOverride = story.body.includes('OVERRIDE_STYLE: TRUE');
+
+// Extract styles and body from the original full story body if available
+// or from the current chunk if it was wrapped
+if (story.body.includes('<style')) {
+    const styleMatch = story.body.match(/<style[^>]*>([\s\S]*)<\/style>/i);
+    googleStyles = styleMatch ? styleMatch[1] : "";
+}
+
+// Clean up the content chunk (remove metadata markers and body tags)
+rawContent = rawContent.replace('OVERRIDE_STYLE: TRUE', '');
+rawContent = rawContent.replace(/<body[^>]*>|<\/body>|<html[^>]*>|<\/html>|<head>[\s\S]*<\/head>/gi, '');
+
+if (!shouldOverride) {
+    googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
+    googleStyles = googleStyles.replace(/font-family:".*?"/g, 'font-family:inherit');
+    googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
+    googleStyles = googleStyles.replace(/font-size:.*?;/g, 'font-size:inherit !important;');
+    
+    // Catch both specific (padding-top) and shorthand (padding: 54pt)
+    googleStyles = googleStyles.replace(/padding(-top|-bottom)?:.*?;/g, 'padding$1:0 !important;');
+    googleStyles = googleStyles.replace(/margin(-top|-bottom)?:.*?;/g, 'margin$1:0 !important;');
+    
+    googleStyles = googleStyles.replace(/line-height:.*?;/g, 'line-height:1.4 !important;');
+} else {
+    // ALWAYS override color, background, and padding to ensure symmetry and contrast
+    googleStyles = googleStyles.replace(/background-color:#ffffff/g, 'background-color:transparent');
+    googleStyles = googleStyles.replace(/color:#000000/g, 'color:inherit');
+    googleStyles = googleStyles.replace(/padding(-top|-bottom)?:.*?;/g, 'padding$1:0 !important;');
+    googleStyles = googleStyles.replace(/margin(-top|-bottom)?:.*?;/g, 'margin$1:0 !important;');
+}
+
+const baseurl = `/stories/${story.id}`;
+
+// --- NEW TITLE DETECTION ---
+let detectedHeader = "";
+
+// Look for the first header (h1, h2, or h3) in the current page content
+const headerMatch = rawContent.match(/<h([1-3])[^>]*>([\s\S]*?)<\/h\1>/i);
+if (headerMatch && headerMatch[2]) {
+    // Strip any internal HTML tags from the header text (like <span> from Google Docs)
+    const headerText = headerMatch[2].replace(/<[^>]*>/g, '').trim();
+    if (headerText && headerText.length < 100) { // Safety check for length
+        detectedHeader = headerText;
+        
+        // --- STRIP THE HEADER FROM CONTENT ---
+        // If we used it as the main title, remove the original header from the body
+        rawContent = rawContent.replace(headerMatch[0], '');
+    }
+}
+
+// --- NORMALIZE SPACING ---
+// Remove leading/trailing empty paragraphs or breaks that cause inconsistent gaps
+rawContent = rawContent.replace(/^(\s*<p[^>]*>(&nbsp;|\s)*<\/p>|<br\/?>|\s)*/gi, '');
+rawContent = rawContent.replace(/(\s*<p[^>]*>(&nbsp;|\s)*<\/p>|<br\/?>|\s)*$/gi, '');
+
+// Ensure there's a clean container with consistent padding
+const finalTitle = detectedHeader || (formatTitle(story.id) + (totalPages > 1 ? ` - Page ${currentPage}` : ''));
+---
+
+<Layout title={finalTitle} description={story.data.title || finalTitle} pubDate={story.data.pubDate || new Date()}>
+    {googleStyles && <style set:html={googleStyles}></style>}
+	<div class="absolute-rendering story-content" set:html={rawContent}></div>
+
+    {totalPages > 1 && (
+        <nav class="pagination">
+            {currentPage > 1 ? (
+                <a href={currentPage === 2 ? baseurl : `${baseurl}/${currentPage - 1}`} class="prev">← Previous Page</a>
+            ) : <span />}
+            
+            <span class="page-info">Page {currentPage} of {totalPages}</span>
+            
+            {currentPage < totalPages ? (
+                <a href={`${baseurl}/${currentPage + 1}`} class="next">Next Page →</a>
+            ) : <span />}
+        </nav>
+    )}
+</Layout>
+
+<style>
+    .absolute-rendering {
+        width: 100%;
+    }
+    .story-content {
+        padding: 1.5rem 0; /* Exactly 1.5rem top and bottom */
+    }
+    /* Force reset any margins from Google Docs on EVERY child to ensure symmetry */
+    :global(.absolute-rendering *) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    /* Re-add a standard bottom margin ONLY between paragraphs */
+    :global(.absolute-rendering p + p) {
+        margin-top: 1.5rem !important;
+    }
+    :global(.absolute-rendering h1), 
+    :global(.absolute-rendering h2), 
+    :global(.absolute-rendering h3) {
+        text-align: center !important;
+        width: 100%;
+        display: block;
+        margin: 2rem 0 !important;
+    }
+    /* Force first and last elements to have ZERO margins */
+    :global(.absolute-rendering > *:first-child) {
+        margin-top: 0 !important;
+    }
+    :global(.absolute-rendering > *:last-child) {
+        margin-bottom: 0 !important;
+    }
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0; 
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--accent);
+    }
+    .page-info {
+        font-style: italic;
+        color: #888;
+    }
+    .prev, .next {
+        text-decoration: none;
+        color: var(--accent);
+        font-weight: bold;
+    }
+    .prev:hover, .next:hover {
+        text-shadow: 0 0 10px var(--accent);
+    }
+</style>

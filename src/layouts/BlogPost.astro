@@ -35,11 +35,16 @@ let titleSize = '4rem';
                 text-align: left;
 			}
 			.title-section {
-				margin-bottom: 3rem;
-				padding: 2em 0;
+				margin-bottom: 1.5rem;
+				padding: 2.5em 0;
 				text-align: center;
 				border-bottom: 1px solid #333;
                 position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100px;
 			}
             :global(.light-mode) .title-section {
                 border-bottom: 1px solid #ddd;
@@ -47,22 +52,26 @@ let titleSize = '4rem';
             .back-link {
                 position: absolute;
                 left: 0;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 1.5rem;
+                top: 1rem;
+                font-size: 1.2rem;
                 text-decoration: none;
                 color: var(--accent);
+                z-index: 10;
             }
             :global(.light-mode) .back-link {
                 color: #008000;
             }
 			.title-section h1 {
 				margin: 0;
-				font-size: var(--titleSize); 
+				font-size: clamp(1.5rem, 8vw, 3rem); 
                 text-transform: uppercase;
-                display: inline-block;
-                letter-spacing: -2px;
-                line-height: 1;
+                display: block;
+                letter-spacing: -1px;
+                line-height: 1.1;
+                width: 100%;
+                padding: 0 4rem; /* Give space for back button */
+                word-wrap: break-word;
+                text-align: center;
 			}
 			.date {
 				margin-bottom: 0.5em;

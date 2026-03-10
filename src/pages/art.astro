@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/BlogPost.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// This will automatically read all images in your public/art folder
+const artDir = path.resolve('./public/art');
+let artImages = [];
+
+if (fs.existsSync(artDir)) {
+    artImages = fs.readdirSync(artDir)
+        .filter(file => /\.(png|jpe?g|webp|gif|svg)$/i.test(file))
+        .map(file => ({
+            src: `/art/${file}`,
+            title: file.replace(/\.(png|jpe?g|webp|gif|svg)$/i, '')
+                       .replace(/[-_]/g, ' ')
+                       .trim()
+        }));
+}
+---
+
+<Layout
+	title="art"
+	description="visual vomit and other things"
+	pubDate={new Date('March 09 2026')}
+>
+	<div class="art-grid">
+		{artImages.length > 0 ? (
+			artImages.map((art) => (
+				<div class="art-item">
+                    <div class="art-title">{art.title}</div>
+					<img src={art.src} alt={art.title} loading="lazy" />
+				</div>
+			))
+		) : (
+			<p class="empty-msg">No art added yet. Drop images into public/art/ to see them here.</p>
+		)}
+	</div>
+</Layout>
+
+<style>
+	.art-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr); /* 2 columns */
+		gap: 2rem; /* Larger gap to accommodate titles */
+		width: 100%;
+		margin-top: 2rem;
+	}
+
+	.art-item {
+		width: 100%;
+		text-align: center;
+	}
+
+	.art-item img {
+		width: 100%;
+		height: auto;
+		display: block;
+        transition: transform 0.3s ease;
+	}
+
+    .art-title {
+        font-family: 'Office Code Pro', monospace !important;
+        font-size: 1.2rem;
+        color: var(--accent);
+        text-transform: none; /* Keeps original capitalization */
+        margin-bottom: 0.5rem;
+    }
+
+    :global(.light-mode) .art-title {
+        color: #008000;
+    }
+
+    .art-item img:hover {
+        filter: brightness(1.2);
+    }
+...
+	.empty-msg {
+		grid-column: span 2;
+		text-align: center;
+		margin-top: 4rem;
+		opacity: 0.5;
+	}
+
+	@media (max-width: 720px) {
+		.art-grid {
+			grid-template-columns: 1fr; /* 1 column on mobile */
+		}
+	}
+</style>

@@ -14,30 +14,18 @@ function rawHtmlLoader(basePath: string) {
             
             const files = fs.readdirSync(dir).filter(f => f.endsWith('.html') || f.endsWith('.md'));
             
-            // Map to store the latest version of each file by its normalized ID
-            const latestFiles = new Map();
-
             for (const file of files) {
+                // Ignore metadata files
+                if (file.includes(':Zone.Identifier')) continue;
+
                 const filePath = path.join(dir, file);
                 const stats = fs.statSync(filePath);
-                
-                // Normalize ID: "Someday-Ill-Love-Myself" and "SomedayIllLoveMyself" 
-                // both become "somedayilllovemyself" for comparison
                 const id = file.replace(/\.(html|md)$/, '');
-                const normalizedId = id.toLowerCase().replace(/[^a-z0-9]/g, '');
                 
-                if (!latestFiles.has(normalizedId) || stats.mtime > latestFiles.get(normalizedId).mtime) {
-                    latestFiles.set(normalizedId, {
-                        id, // Keep the original ID for the store
-                        filePath,
-                        mtime: stats.mtime
-                    });
-                }
-            }
-            
-            for (const { id, filePath, mtime } of latestFiles.values()) {
                 let content = fs.readFileSync(filePath, 'utf-8');
-                let finalDate = mtime;
+                let finalDate = stats.mtime;
+                
+                // Extract metadata if it exists
                 const dateMatch = content.match(/pubDate:\s*(.*)/i);
                 if (dateMatch) {
                     const parsedDate = new Date(dateMatch[1]);
@@ -46,6 +34,9 @@ function rawHtmlLoader(basePath: string) {
                         content = content.replace(/pubDate:\s*.*\n?/i, '');
                     }
                 }
+
+                // If it's a full HTML file, we need to make sure we keep the <style> and <body> contents
+                // but Astro needs a clean string. We'll pass it as is and let the [id].astro handle the extraction.
                 
                 store.set({
                     id,
@@ -76,4 +67,23 @@ const stories = defineCollection({
 	}),
 });
 
-export const collections = { poems, stories };
+const blog = defineCollection({
+	loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/blog" }),
+	schema: z.object({
+		title: z.string(),
+		pubDate: z.coerce.date(),
+		description: z.string().optional(),
+	}),
+});
+
+const videos = defineCollection({
+	loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/videos" }),
+	schema: z.object({
+		title: z.string(),
+		pubDate: z.coerce.date(),
+		description: z.string().optional(),
+		videoUrl: z.string().optional(),
+	}),
+});
+
+export const collections = { poems, stories, videos };
