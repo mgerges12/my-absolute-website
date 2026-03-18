@@ -1,6 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/BlogPost.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Get video IDs to skip
+const skipDir = path.resolve('./src/content/videos/skip');
+const skipList = fs.existsSync(skipDir) 
+    ? fs.readdirSync(skipDir).map(f => f.split('.')[0]) 
+    : [];
 
 const safeSort = (a, b) => {
     const dateA = a.data.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
@@ -8,7 +16,10 @@ const safeSort = (a, b) => {
     return dateB - dateA;
 };
 
-const videos = (await getCollection('videos')).sort(safeSort);
+const allVideos = await getCollection('videos');
+const videos = allVideos
+    .filter(v => !skipList.includes(v.id))
+    .sort(safeSort);
 ---
 
 <Layout
