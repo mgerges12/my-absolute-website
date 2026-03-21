@@ -1,0 +1,216 @@
+---
+// Flamza World Persistent System
+---
+
+<div id="flamza-system-root">
+    <!-- Coin Counter -->
+    <div class="flamza-status">
+        <div class="coin-display">
+            <span class="coin-icon">🟡</span>
+            <span id="flamza-coins">0</span>
+        </div>
+        <div id="user-status" class="user-display">
+            <button id="flamza-login-btn">LOG IN</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="flamza-auth-overlay" class="overlay">
+        <div class="modal">
+            <h2 id="auth-title">ENLIST IN FLAMZA</h2>
+            <div class="auth-inputs">
+                <input type="text" id="auth-username" placeholder="USERNAME" />
+                <input type="password" id="auth-password" placeholder="PASSWORD" />
+            </div>
+            <div class="auth-actions">
+                <button id="auth-submit-btn">PROCEED</button>
+                <button id="auth-close-btn">CANCEL</button>
+            </div>
+            <p id="auth-msg"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // System logic for Coins and Auth
+    function initFlamza() {
+        const coinDisplay = document.getElementById('flamza-coins');
+        const userStatus = document.getElementById('user-status');
+        const authOverlay = document.getElementById('flamza-auth-overlay');
+        const authCloseBtn = document.getElementById('auth-close-btn');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const usernameInput = document.getElementById('auth-username') as HTMLInputElement;
+        const passwordInput = document.getElementById('auth-password') as HTMLInputElement;
+        const authMsg = document.getElementById('auth-msg');
+
+        function updateUI() {
+            const currentUserStr = localStorage.getItem('flamza_user');
+            const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+            
+            if (userStatus && coinDisplay) {
+                if (currentUser) {
+                    userStatus.innerHTML = `<span class="username">${currentUser.username}</span> | <button id="flamza-logout-btn">LOGOUT</button>`;
+                    document.getElementById('flamza-logout-btn')?.addEventListener('click', logout);
+                    const coins = localStorage.getItem(`flamza_coins_${currentUser.username}`) || '0';
+                    coinDisplay.textContent = coins;
+                } else {
+                    userStatus.innerHTML = `<button id="flamza-login-btn">LOG IN</button>`;
+                    document.getElementById('flamza-login-btn')?.addEventListener('click', () => {
+                        if (authOverlay) authOverlay.style.display = 'flex';
+                    });
+                    coinDisplay.textContent = '0';
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('flamza_user');
+            updateUI();
+        }
+
+        authCloseBtn?.addEventListener('click', () => {
+            if (authOverlay) authOverlay.style.display = 'none';
+        });
+
+        authSubmitBtn?.addEventListener('click', () => {
+            if (!usernameInput || !passwordInput) return;
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (username && password) {
+                const users = JSON.parse(localStorage.getItem('flamza_citizens') || '{}');
+                
+                if (users[username]) {
+                    if (users[username].password === password) {
+                        localStorage.setItem('flamza_user', JSON.stringify({ username }));
+                    } else {
+                        if (authMsg) authMsg.textContent = "INVALID CLEARANCE";
+                        return;
+                    }
+                } else {
+                    users[username] = { password };
+                    localStorage.setItem('flamza_citizens', JSON.stringify(users));
+                    localStorage.setItem(`flamza_coins_${username}`, '10'); // Starting bonus
+                    localStorage.setItem('flamza_user', JSON.stringify({ username }));
+                }
+
+                if (authOverlay) authOverlay.style.display = 'none';
+                updateUI();
+            }
+        });
+
+        updateUI();
+    }
+
+    // Run on every navigation (important for Astro SPA-like behavior if using ViewTransitions)
+    initFlamza();
+    document.addEventListener('astro:after-swap', initFlamza);
+</script>
+
+<style>
+    .flamza-status {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 10000;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--orange-accent);
+        padding: 0.5rem 1rem;
+        color: var(--orange-accent);
+        font-family: 'Office Code Pro', monospace;
+    }
+
+    .coin-display {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .user-display :global(button) {
+        background: transparent;
+        border: 1px solid var(--orange-accent);
+        color: var(--orange-accent);
+        padding: 0.2rem 0.5rem;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.8rem;
+    }
+
+    .user-display :global(button:hover) {
+        background: var(--orange-accent);
+        color: #000;
+    }
+
+    .username {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    /* Auth Modal */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 20000;
+    }
+
+    .modal {
+        background: #000;
+        border: 2px solid var(--orange-accent);
+        padding: 2rem;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 0 20px rgba(var(--orange-accent-rgb), 0.5);
+    }
+
+    .auth-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    .auth-inputs input {
+        background: #111;
+        border: 1px solid var(--orange-accent);
+        color: var(--orange-accent);
+        padding: 0.5rem;
+        font-family: inherit;
+    }
+
+    .auth-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .auth-actions button {
+        background: var(--orange-accent);
+        color: #000;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-family: inherit;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #auth-close-btn {
+        background: transparent;
+        border: 1px solid var(--orange-accent);
+        color: var(--orange-accent);
+    }
+
+    #auth-msg {
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: #ff4d4d;
+    }
+</style>

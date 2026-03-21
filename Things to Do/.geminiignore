@@ -1,0 +1,21 @@
+# FLAMZA WORLD MEMORY
+# /remember/unknown is the core of the Flamza world.
+# This is where aliens (users) come to work, play, shop, and interact.
+# 
+# CORE FUNCTIONS (Planned):
+# 1. COIN COUNTER: A universal money system for all /remember pages.
+# 2. LOGIN SYSTEM: Simple Username/Password to save "game" progress (coins, etc.).
+# 3. JOBS: Ways for users to earn coins.
+# 4. ACTIVITIES: Play, Shop, etc.
+#
+# NOTE: Login is only for state persistence and is not a security-critical system.
+
+# ASSET & LOGIC TASKS (TODO):
+# 1. CURSOR LOGIC: Update /remember/* to use a custom Alien cursor and a Burger click cursor.
+#    - CURRENT: Still using default/site-wide logic (Dinosaur/Ham).
+#    - ACTION: Draw Alien (idle) and Burger (click) SVGs.
+# 2. SITE-WIDE CURSORS: Update the main site's Dinosaur (idle) and Ham (click) to something else.
+# 3. COIN ASSET: Draw a custom Flamza Coin to replace the current emoji (🟡).
+# 4. LEGAL/COMPLIANCE: Once persistent login is finalized, draft a REAL TOS and Privacy Policy.
+#    - Focus: Data storage (Username/Password) is EXCLUSIVELY for "game" state within Flamza.
+#    - Users need to be informed how their login data is being saved.

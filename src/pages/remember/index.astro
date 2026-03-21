@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/BlogPost.astro';
+import FlamzaSystem from '../../components/FlamzaSystem.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -13,8 +14,6 @@ const styleMatch = constitutionRaw.match(/<style[^>]*>([\s\S]*)<\/style>/i);
 
 const constitutionBody = bodyMatch ? bodyMatch[1] : constitutionRaw;
 const constitutionStyle = styleMatch ? styleMatch[1] : '';
-
-// "Remember" secret page
 ---
 
 <Layout
@@ -22,6 +21,7 @@ const constitutionStyle = styleMatch ? styleMatch[1] : '';
 	description="A place to remember."
 	pubDate={new Date('March 17 2026')}
 >
+    <FlamzaSystem />
     <div id="flamza-overlay" class="overlay">
         <div class="modal">
             <h2>WELCOME TO THE LAND OF FLAMZA</h2>
@@ -47,20 +47,21 @@ const constitutionStyle = styleMatch ? styleMatch[1] : '';
                 constitute your agreement as a Flamza resident.
             </p>
         </div>
+
+        <a href="/remember/unknown" class="continue-link">CONTINUE</a>
     </div>
 
     <script>
         const overlay = document.getElementById('flamza-overlay');
         const closeBtn = document.getElementById('close-modal');
 
-        // Show modal on load if not already seen in session
-        if (overlay && !sessionStorage.getItem('flamza-acknowledged')) {
+        // Always show modal on load
+        if (overlay) {
             overlay.style.display = 'flex';
         }
 
         closeBtn?.addEventListener('click', () => {
             if (overlay) overlay.style.display = 'none';
-            sessionStorage.setItem('flamza-acknowledged', 'true');
         });
     </script>
 
@@ -118,6 +119,25 @@ const constitutionStyle = styleMatch ? styleMatch[1] : '';
         .constitution-notice a {
             text-decoration: underline;
             color: var(--orange-accent) !important;
+        }
+        .continue-link {
+            display: inline-block;
+            margin-top: 3rem;
+            color: var(--orange-accent);
+            text-decoration: none;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 0.5rem 2rem;
+            border: 1px solid var(--orange-accent);
+        }
+        .continue-link:hover {
+            box-shadow: 0 0 15px var(--orange-accent);
+            text-shadow: 0 0 10px var(--orange-accent);
+            transform: translateY(-5px);
+            background: rgba(var(--orange-accent-rgb), 0.1);
         }
 
         /* Modal Styles */
