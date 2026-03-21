@@ -1,0 +1,43 @@
+
+> websiteproject@0.0.1 dev
+> astro dev
+
+23:58:32 [types] Generated 0ms
+23:58:33 [content] Syncing content
+23:58:33 [content] Synced content
+23:58:33 [vite] Port 4321 is in use, trying another one...
+
+ astro  v5.18.0 ready in 530 ms
+
+┃ Local    http://localhost:4322/
+┃ Network  use --host to expose
+
+23:58:33 watching for file changes...
+23:58:58 [200] / 25ms
+23:59:04 [200] /art 10ms
+23:59:05 [200] / 3ms
+23:59:08 [200] /secret 11ms
+24:00:15 [watch] src/pages/secret.astro
+24:00:15 [200] /secret 5ms
+24:04:06 [watch] src/pages/secret.astro
+24:04:07 [200] /secret 5ms
+24:07:25 [watch] /src/layouts/BlogPost.astro?astro&type=style&index=0&lang.css
+24:07:25 [ERROR] The symbol "isSecretPage" has already been declared
+  Stack trace:
+    at /home/mahewses/websiteproject/src/layouts/BlogPost.astro:20:6
+    [...] See full stack trace in the browser, or rerun with --verbose.
+24:07:34 [watch] /src/layouts/BlogPost.astro?astro&type=style&index=0&lang.css
+24:07:34 [200] /secret 6ms
+24:08:01 [watch] /src/styles/global.css
+24:08:01 [200] /secret 9ms
+24:08:10 [watch] /src/layouts/BlogPost.astro?astro&type=style&index=0&lang.css
+24:08:10 [200] /secret 6ms
+24:08:22 [watch] src/pages/secret.astro
+24:08:22 [200] /secret 7ms
+24:14:08 Configuration file updated. Restarting...
+24:14:08 [content] Syncing content
+24:14:08 [content] Astro config changed
+24:14:08 [content] Clearing content store
+24:14:08 [content] Synced content
+24:14:08 [types] Generated 491ms
+24:14:09 [vite] Re-optimizing dependencies because vite config has changed

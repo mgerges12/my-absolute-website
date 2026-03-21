@@ -2,10 +2,40 @@
   The Absolute Style
  */
 
+/* 
+  Everything under /secret or /secret/* should be orange,
+  except for navigation links (home, videos, writing, art) 
+  and the absolute website copyright in the footer.
+*/
 :root {
 	--accent: #00ff00; /* Light Green for Dark Mode */
+    --orange-accent: #ff8c00; /* Orange for Secret Pages */
 	--black: 0, 0, 0;
 	--white: 255, 255, 255;
+}
+
+/* Secret Page Theme */
+body:has(main article.secret-page) {
+    color: var(--orange-accent);
+}
+
+body:has(main article.secret-page) h1,
+body:has(main article.secret-page) h2,
+body:has(main article.secret-page) h3,
+body:has(main article.secret-page) h4,
+body:has(main article.secret-page) h5,
+body:has(main article.secret-page) h6,
+body:has(main article.secret-page) .date,
+body:has(main article.secret-page) a:not(nav a) {
+    color: var(--orange-accent) !important;
+}
+
+body:has(main article.secret-page) a:not(nav a):hover {
+    text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+}
+
+body:has(main article.secret-page) .title-section {
+    border-bottom-color: var(--orange-accent) !important;
 }
 
 * {

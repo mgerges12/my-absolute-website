@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/BlogPost.astro';
+
+// "Remember" secret page
+---
+
+<Layout
+	title="Remember"
+	description="A place to remember."
+	pubDate={new Date('March 17 2026')}
+>
+    <div id="flamza-overlay" class="overlay">
+        <div class="modal">
+            <h2>WELCOME TO THE LAND OF FLAMZA</h2>
+            <p>YOU ARE NOW ENTERING THE PSUEDO WORLD OF EARTH 2 UNDER THE FLAMZA LAND.</p>
+            <p>NOTHING ON THIS PAGE APPLIES TO YOU AS A USER LEGALLY AND EVERYTHING IS A JOKE.</p>
+            <button id="close-modal">I UNDERSTAND</button>
+        </div>
+    </div>
+
+    <div class="remember-container">
+        <h2 class="flamza-header">THE LAND Of FLAMZA</h2>
+
+        <div class="constitution-notice">
+            <p>
+                This constitution as well as the 
+                <a href="/remember/privacy">Privacy Policy</a> and 
+                <a href="/remember/tos">Terms of Service</a> 
+                constitute your agreement as a Flamza resident.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const overlay = document.getElementById('flamza-overlay');
+        const closeBtn = document.getElementById('close-modal');
+
+        // Show modal on load if not already seen in session
+        if (overlay && !sessionStorage.getItem('flamza-acknowledged')) {
+            overlay.style.display = 'flex';
+        }
+
+        closeBtn?.addEventListener('click', () => {
+            if (overlay) overlay.style.display = 'none';
+            sessionStorage.setItem('flamza-acknowledged', 'true');
+        });
+    </script>
+
+    <style is:global>
+        .secret-page .date {
+            color: #ff8c00 !important;
+        }
+        .secret-page h1 {
+            color: #ff8c00 !important;
+        }
+    </style>
+
+    <style>
+        .remember-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .flamza-header {
+            color: #ff8c00;
+            text-transform: uppercase;
+            margin-top: -1rem;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        .constitution-notice {
+            margin-top: 4rem;
+            padding: 1rem;
+            border: 1px dashed #ff8c00;
+            font-size: 0.9rem;
+            max-width: 600px;
+        }
+        .constitution-notice a {
+            text-decoration: underline;
+        }
+
+        /* Modal Styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal {
+            background: #000;
+            border: 2px solid #ff8c00;
+            padding: 2rem;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.5);
+        }
+        .modal h2 {
+            color: #ff8c00;
+            margin-bottom: 1rem;
+        }
+        .modal p {
+            margin-bottom: 1rem;
+            color: #ff8c00;
+        }
+        .modal button {
+            background: #ff8c00;
+            color: #000;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+    </style>
+</Layout>
