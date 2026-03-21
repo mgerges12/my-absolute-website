@@ -17,7 +17,7 @@
     <!-- Login Modal -->
     <div id="flamza-auth-overlay" class="overlay">
         <div class="modal">
-            <h2 id="auth-title">ENLIST IN FLAMZA</h2>
+            <h2 id="auth-title">JOIN THE FLAMZA NATION</h2>
             <div class="auth-inputs">
                 <input type="text" id="auth-username" placeholder="USERNAME" />
                 <input type="password" id="auth-password" placeholder="PASSWORD" />
@@ -88,9 +88,18 @@
                         return;
                     }
                 } else {
+                    // Check if this browser has already claimed a starting bonus
+                    const bonusClaimed = localStorage.getItem('flamza_bonus_claimed');
+                    const startingCoins = bonusClaimed ? '0' : '10';
+                    
                     users[username] = { password };
                     localStorage.setItem('flamza_citizens', JSON.stringify(users));
-                    localStorage.setItem(`flamza_coins_${username}`, '10'); // Starting bonus
+                    localStorage.setItem(`flamza_coins_${username}`, startingCoins);
+                    
+                    if (!bonusClaimed) {
+                        localStorage.setItem('flamza_bonus_claimed', 'true');
+                    }
+                    
                     localStorage.setItem('flamza_user', JSON.stringify({ username }));
                 }
 
