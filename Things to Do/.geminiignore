@@ -18,11 +18,10 @@
 # 3. COIN ASSET: Draw a custom Flamza Coin to replace the current emoji (🟡).
 # 4. LEGAL/COMPLIANCE: 
 #    - REAL POLICY: In footer across entire site (src/pages/).
-#    - FLAMZA POLICY: For the Flamza country only (src/pages/remember/FakeAgreements/).
-#    - Files: privacypolicyfake.html, termsofservicefake.html.
+#    - FLAMZA LAW: For the Flamza country only.
 #    - Goal: Inform users about data storage (Username/Password) for game state.
 
 # USER DIRECTIVE (March 21):
-# - Flamza Privacy Policy: /remember/policy (Placeholder: "Flamza Privacy Policy")
-# - Flamza TOS: /remember/tos (Placeholder: "Flamza Terms of Service")
-# - All Flamza agreements will eventually live in src/pages/remember/FakeAgreements/
+# - The Flamza Law: /remember/law (Placeholder: "The Flamza Law")
+# - All Flamza legal assets will eventually live in src/pages/remember/FakeAgreements/
+
