@@ -16,6 +16,13 @@
 #    - ACTION: Draw Alien (idle) and Burger (click) SVGs.
 # 2. SITE-WIDE CURSORS: Update the main site's Dinosaur (idle) and Ham (click) to something else.
 # 3. COIN ASSET: Draw a custom Flamza Coin to replace the current emoji (🟡).
-# 4. LEGAL/COMPLIANCE: Once persistent login is finalized, draft a REAL TOS and Privacy Policy.
-#    - Focus: Data storage (Username/Password) is EXCLUSIVELY for "game" state within Flamza.
-#    - Users need to be informed how their login data is being saved.
+# 4. LEGAL/COMPLIANCE: 
+#    - REAL POLICY: In footer across entire site (src/pages/).
+#    - FLAMZA POLICY: For the Flamza country only (src/pages/remember/FakeAgreements/).
+#    - Files: privacypolicyfake.html, termsofservicefake.html.
+#    - Goal: Inform users about data storage (Username/Password) for game state.
+
+# USER DIRECTIVE (March 21):
+# - Flamza Privacy Policy: /remember/policy (Placeholder: "Flamza Privacy Policy")
+# - Flamza TOS: /remember/tos (Placeholder: "Flamza Terms of Service")
+# - All Flamza agreements will eventually live in src/pages/remember/FakeAgreements/
