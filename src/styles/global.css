@@ -9,9 +9,15 @@
 */
 :root {
 	--accent: #00ff00; /* Light Green for Dark Mode */
-    --orange-accent: #ff8c00; /* Orange for Secret Pages */
+    --orange-accent: #ff8c00; /* Orange for Secret Pages (Dark Mode) */
+    --orange-accent-rgb: 255, 140, 0;
 	--black: 0, 0, 0;
 	--white: 255, 255, 255;
+}
+
+body.light-mode {
+    --orange-accent: #cc7000; /* Darker Orange for Light Mode Secret Pages */
+    --orange-accent-rgb: 204, 112, 0;
 }
 
 /* Secret Page Theme */
