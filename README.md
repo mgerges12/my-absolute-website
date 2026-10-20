@@ -1,62 +1,44 @@
-# Astro Starter Kit: Blog
+# an absolute website from nowhere to no one
 
-```sh
-npm create astro@latest -- --template blog
+Live at **https://my-absolute-website.vercel.app/**
+
+Every push to `main` on GitHub deploys automatically through Vercel (about a minute).
+
+## How to update the site
+
+1. Make your change (see below).
+2. Double-click **`publish.bat`**, type a short description, and press Enter.
+3. Wait about a minute, then refresh the live site.
+
+### Add art
+Drop an image (`.jpg`, `.png`, `.webp`, `.gif`) into `public/art/`.
+The file name becomes the title, so `i-declare-suffering.jpg` shows as "i declare suffering".
+
+### Add a poem or story
+1. Write it in Google Docs.
+2. **File → Download → Web page (.html, zipped)**, then unzip it.
+3. Rename the `.html` file to the title you want, e.g. `SomedayIllLoveMyself.html` or `A-memoir-of-an-unimportant-person.html`.
+   (CapitalLetters and dashes both become spaces in the title.)
+4. Put it in `src/content/poems/` or `src/content/stories/`.
+
+**Control the order:** add a line like this at the very top of the file (newest is listed first):
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+pubDate: 2026-10-19
 ```
+Without it, the date is whenever Vercel built the site, so the order can shuffle.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+To keep your Google Docs fonts and sizes instead of the site's style, add `OVERRIDE_STYLE: TRUE` near the top.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Add a video
+Double-click **`add-video.bat`** and paste the YouTube link.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+### Change the site title or description
+Edit `src/consts.ts`.
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+## Previewing before publishing (optional)
+Install Node.js LTS from https://nodejs.org, then in this folder run:
+```
+npm install
+npm run dev
+```
+and open http://localhost:4321.
